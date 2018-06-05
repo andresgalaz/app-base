@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/AGALAZ/workspace/a2m/cordova/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/home/agalaz/workspace/a2m/cordova/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
-                    "source": "/Users/AGALAZ/workspace/a2m/cordova/platforms/android/app/src/main/res/values/strings.xml",
+                    "source": "/home/agalaz/workspace/a2m/cordova/platforms/android/app/src/main/res/values/strings.xml",
                     "from": {
                         "startLines": "4,2,3",
                         "startColumns": "4,4,4",

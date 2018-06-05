@@ -9,6 +9,9 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.a2m.a2m"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.a2m.a2m"
     }
   },
   "dependent_plugins": {}

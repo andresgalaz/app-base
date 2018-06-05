@@ -17,17 +17,35 @@ Ext.define('a2m.Application', {
 
     launch: function () {
 
-        // It's important to note that this type of application could use
-        // any type of storage, i.e., Cookies, LocalStorage, etc.
-        var loggedIn;
+        // Recupera la información de conexión de la información local
+        var a2mLogin = Ext.decode(localStorage.getItem("a2mLogin"));
+        console.log(a2mLogin);
 
-        // Check to see the current value of the localStorage key
-        loggedIn = localStorage.getItem("TutorialLoggedIn");
+        try {
+            // Va a refrescar la posición cada minuto
+            Ext.create('Ext.util.Geolocation', {
+                autoUpdate: true,
+                frequency: 60000,
+                listeners: {
+                    locationupdate: function (geo) {
+                        // alert('New latitude: ' + geo.getLatitude());
+                        Ext.Msg.alert('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
+                    },
+                    locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
+                        if (bTimeout) {
+                            alert('Timeout occurred.');
+                        } else {
+                            alert('Error occurred:' + message);
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            alert(e.message);
+        }
 
-        // This ternary operator determines the value of the TutorialLoggedIn key.
-        // If TutorialLoggedIn isn't true, we display the login window,
-        // otherwise, we display the main view
-        if (loggedIn) {
+        // Verifica que los datos existan y que este conectado
+        if (a2mLogin && a2mLogin.conectado === true) {
             Ext.Viewport.add(Ext.create({
                 xtype: 'app-main'
             }));

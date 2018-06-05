@@ -13,7 +13,7 @@ Ext.define('a2m.view.main.MainController', {
 
     onConfirm: function (choice) {
         if (choice === 'yes') {
-            //
+            // Nada
         }
         if (choice === 'no') {
             this.onClickButton();
@@ -22,8 +22,15 @@ Ext.define('a2m.view.main.MainController', {
 
     onTabChange: function (sender) { //, newRecord, oldRecord, eOpts) {
         var panel = sender.getActiveItem();
-        console.log('onTabChange:', panel, panel.url);
-        var RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
+        var RUTA_GLOBAL = '';
+
+        // Valores posibles de Phone y Desktop:            Ext.os.deviceType
+        if (Ext.os.deviceType != 'Desktop') {
+            RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
+        }
+        if (!panel || !panel.url || panel.bCargado === true)
+            return;
+
         Ext.Ajax.request({
             url: RUTA_GLOBAL + panel.url,
             method: 'post',
@@ -41,8 +48,10 @@ Ext.define('a2m.view.main.MainController', {
     },
 
     onClickButton: function () {
+        var a2mLogin = Ext.decode(localStorage.getItem("a2mLogin"));
+        console.log(a2mLogin);
         // Remove the localStorage key/value
-        localStorage.removeItem('TutorialLoggedIn');
+        localStorage.removeItem('a2mLogin');
 
         // Remove Main View
         this.getView().destroy();

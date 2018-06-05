@@ -2,13 +2,16 @@ Ext.define('a2m.view.login.LoginController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.login',
 
-    onLoginClick: function(sender) {
+    onLoginClick: function (sender) {
+        // Obtiene los valores de los cmapos del formulario de Login
+        var cUsuario = sender.up('formpanel').getFields('fldUsuario').getValue();
+        var cPassword = sender.up('formpanel').getFields('fldPassword').getValue();
+        console.log(cUsuario, cPassword);
 
-        // This would be the ideal location to verify the user's credentials via
-        // a server-side lookup. We'll just move forward for the sake of this example.
+        // Conecta al servidor
 
-        // Set the localStorage value to true
-        localStorage.setItem("TutorialLoggedIn", true);
+        // Guarda la información de conexión en el ambiente local
+        localStorage.setItem("a2mLogin", Ext.encode({ usuario: cUsuario, password: cPassword, conectado: true }));
 
         // Remove Login Window
         this.getView().destroy();

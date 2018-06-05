@@ -19,19 +19,15 @@ Ext.define('a2m.view.login.Login', {
         reference: 'form',
         items: [{
             xtype: 'textfield',
-            name: 'username',
-            label: 'Username',
+            name: 'fldUsuario',
+            label: 'Usuario',
             allowBlank: false
         }, {
             xtype: 'textfield',
-            name: 'password',
+            name: 'fldPassword',
             inputType: 'password',
-            label: 'Password',
+            label: 'Contraseña',
             allowBlank: false
-        }, {
-            xtype: 'displayfield',
-            hideEmptyLabel: false,
-            value: 'Enter any non-blank password'
         }],
         buttons: [{
             text: 'Login',
