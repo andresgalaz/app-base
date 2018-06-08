@@ -3,6 +3,27 @@ Ext.define('a2m.view.login.LoginController', {
     alias: 'controller.login',
 
     onLoginClick: function (sender) {
+
+        // Valores posibles de Phone y Desktop:  Ext.os.deviceType
+        if (Ext.os.deviceType != 'Desktop') {
+            RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
+        }
+        
+        Ext.Ajax.request({
+            url: RUTA_GLOBAL + panel.url,
+            method: 'post',
+            success: function (response, opts) {
+                var obj = Ext.decode(response.responseText);
+                console.log(opts);
+                panel.bCargado = true;
+                panel.setHtml(null);
+                panel.add(obj);
+            },
+            failure: function (response, opts) {
+                panel.setHtml('server-side failure with status code ' + response.status);
+            }
+        })
+        
         // Obtiene los valores de los cmapos del formulario de Login
         var cUsuario = sender.up('formpanel').getFields('fldUsuario').getValue();
         var cPassword = sender.up('formpanel').getFields('fldPassword').getValue();

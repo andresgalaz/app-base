@@ -24,7 +24,7 @@ Ext.define('a2m.view.main.MainController', {
         var panel = sender.getActiveItem();
         var RUTA_GLOBAL = '';
 
-        // Valores posibles de Phone y Desktop:            Ext.os.deviceType
+        // Valores posibles de Phone y Desktop:  Ext.os.deviceType
         if (Ext.os.deviceType != 'Desktop') {
             RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
         }
