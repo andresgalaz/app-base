@@ -13,7 +13,7 @@ Ext.define('a2m.view.main.MainController', {
 
     onConfirm: function (choice) {
         if (choice === 'yes') {
-            // Nada
+            // Nada x
         }
         if (choice === 'no') {
             this.onClickButton();
