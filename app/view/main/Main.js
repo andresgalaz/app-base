@@ -23,37 +23,9 @@ Ext.define('a2m.view.main.Main', {
 
     tabBarPosition: 'top',
 
-    items: [
-        {
-            title: 'Principal',
-            iconCls: 'x-fa fa-home',
-            layout: 'fit',
-            items: [{
-                xtype: 'mainlist'
-            }]
-        }, {
-            title: 'Panel Dinámico',
-            url: 'agv/panelDinamico.js',
-            iconCls: 'x-fa fa-cloud-download',
-            bind: {
-                html: '{cargandoForm}'
-            }
-        }, {
-            title: 'Groups',
-            iconCls: 'x-fa fa-users',
-            bind: {
-                html: '{cargandoForm}'
-            }
-        }, {
-            title: 'Settings',
-            iconCls: 'x-fa fa-cog',
-            bind: {
-                html: '{cargandoForm}'
-            }
-        }
-    ],
-    listeners : {
-        activeItemchange:'onTabChange'
+    items: [],
+    listeners: {
+        activeItemchange: 'onTabChange'
 
     }
 });

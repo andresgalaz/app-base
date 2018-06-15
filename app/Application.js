@@ -46,9 +46,31 @@ Ext.define('a2m.Application', {
 
         // Verifica que los datos existan y que este conectado
         if (a2mLogin && a2mLogin.conectado === true) {
-            Ext.Viewport.add(Ext.create({
+
+            // Valores posibles de Phone y Desktop:  Ext.os.deviceType
+            var RUTA_GLOBAL = '';
+            if (Ext.os.deviceType != 'Desktop') {
+                RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
+            }
+
+            var arrItem = Ext.decode(localStorage.getItem("a2mItems"));
+            // Crea panel principal
+            var m = Ext.create({
                 xtype: 'app-main'
-            }));
+            });
+            // Construye item-tab
+            for (i = 0; i < arrItem.length; i++) {
+                m.add({
+                    title: arrItem[i].cNombreRecurso,
+                    url: RUTA_GLOBAL + arrItem[i].cAccion,
+                    iconCls: arrItem[i].cIconCls,
+                    bind: {
+                        html: '{cargandoForm}'
+                    }
+                });
+            }
+
+            Ext.Viewport.add(m);
         } else {
             var p = Ext.create({
                 xtype: 'login'
