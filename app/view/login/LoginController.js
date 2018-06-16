@@ -3,9 +3,14 @@ Ext.define('a2m.view.login.LoginController', {
     alias: 'controller.login',
 
     onLoginClick: function (sender) {
+        // Obtiene los valores de los cmapos del formulario de Login
+        var cUsuario = sender.up('formpanel').getFields('fldUsuario').getValue();
+        var cPassword = sender.up('formpanel').getFields('fldPassword').getValue();
+        console.log(cUsuario, cPassword);
+
 
         // Valores posibles de Phone y Desktop:  Ext.os.deviceType
-        RUTA_GLOBAL = '';
+        RUTA_GLOBAL = '../';
         if (Ext.os.deviceType != 'Desktop') {
             RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
         }
@@ -13,8 +18,15 @@ Ext.define('a2m.view.login.LoginController', {
         var vista = this.getView();
 
         Ext.Ajax.request({
-            url: RUTA_GLOBAL + 'do/PE/menuMovilLogin.bsh',
+            url: RUTA_GLOBAL + 'do/a2m/menuMovilLogin.bsh',
             method: 'post',
+            params: {
+                prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
+                    u: cUsuario,
+                    p: cPassword
+                })),
+                prm_dataSource: 'xgenJNDI'
+            },
             success: function (response, opts) {
                 // Remove Login Window
                 vista.destroy();
@@ -22,7 +34,7 @@ Ext.define('a2m.view.login.LoginController', {
                 var obj = Ext.decode(response.responseText);
                 var arrItem = obj.response;
                 localStorage.setItem("a2mItems", Ext.encode(arrItem));
-        
+
                 // Crea panel principal
                 var m = Ext.create({
                     xtype: 'app-main'
@@ -42,16 +54,12 @@ Ext.define('a2m.view.login.LoginController', {
                 Ext.Viewport.add(m);
             },
             failure: function (response, opts) {
-                panel.setHtml('server-side failure with status code ' + response.status + '<br/>' +
-                    RUTA_GLOBAL + 'do/PE/menuMovilLogin.bsh'
-                );
+                console.log(response);
+                // panel.setHtml('server-side failure with status code ' + response.status + '<br/>' +
+                //     RUTA_GLOBAL + 'do/PE/menuMovilLogin.bsh'
+                // );
             }
         });
-
-        // Obtiene los valores de los cmapos del formulario de Login
-        var cUsuario = sender.up('formpanel').getFields('fldUsuario').getValue();
-        var cPassword = sender.up('formpanel').getFields('fldPassword').getValue();
-        console.log(cUsuario, cPassword);
 
         // Conecta al servidor
 
