@@ -12,6 +12,8 @@ Ext.define('a2m.view.main.MainController', {
     },
 
     onConfirm: function (choice) {
+        a2m.Helper.someFn('Holas');
+        
         if (choice === 'yes') {
             // Nada xy
         }

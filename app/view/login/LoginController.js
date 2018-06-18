@@ -10,7 +10,8 @@ Ext.define('a2m.view.login.LoginController', {
 
 
         // Valores posibles de Phone y Desktop:  Ext.os.deviceType
-        RUTA_GLOBAL = '../';
+        // RUTA_GLOBAL = '../';
+        RUTA_GLOBAL = '../'; // localhost:1841
         if (Ext.os.deviceType != 'Desktop') {
             RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
         }
