@@ -17,42 +17,15 @@ Ext.define('a2m.Application', {
 
     launch: function () {
 
+        a2m.Helper.inicio();
+
         // Recupera la información de conexión de la información local
-        var a2mLogin = Ext.decode(localStorage.getItem("a2mLogin"));
-        console.log(a2mLogin);
-
-        try {
-            // Va a refrescar la posición cada minuto
-            Ext.create('Ext.util.Geolocation', {
-                autoUpdate: true,
-                frequency: 60000,
-                listeners: {
-                    locationupdate: function (geo) {
-                        // alert('New latitude: ' + geo.getLatitude());
-                        Ext.Msg.alert('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
-                    },
-                    locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
-                        if (bTimeout) {
-                            alert('Timeout occurred.');
-                        } else {
-                            alert('Error occurred:' + message);
-                        }
-                    }
-                }
-            });
-        } catch (e) {
-            alert(e.message);
-        }
-
+        var token = localStorage.getItem("token");
+        console.log("token:", token);
         // Verifica que los datos existan y que este conectado
-        if (a2mLogin && a2mLogin.conectado === true) {
-
-            // Valores posibles de Phone y Desktop:  Ext.os.deviceType
-            var RUTA_GLOBAL = '';
-            if (Ext.os.deviceType != 'Desktop') {
-                RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
-            }
-
+        if (token) {
+SEGUIR DESDE AQUI: si hay token pedir menu
+si falla usar la memoria local
             var arrItem = Ext.decode(localStorage.getItem("a2mItems"));
             // Crea panel principal
             var m = Ext.create({

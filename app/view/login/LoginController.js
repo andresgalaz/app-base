@@ -33,8 +33,9 @@ Ext.define('a2m.view.login.LoginController', {
                 vista.destroy();
                 //
                 var obj = Ext.decode(response.responseText);
-                var arrItem = obj.response;
-                localStorage.setItem("a2mItems", Ext.encode(arrItem));
+                var arrItem = obj.menu;
+                localStorage.setItem("menu", Ext.encode(arrItem));
+                localStorage.setItem("token", Ext.encode(obj.token));
 
                 // Crea panel principal
                 var m = Ext.create({
@@ -64,6 +65,8 @@ Ext.define('a2m.view.login.LoginController', {
 
         // Conecta al servidor
 
+        // Guarda la conexión en la memoria local
+        a2m.Helper.usuario = cUsuario;
         // Guarda la información de conexión en el ambiente local
         localStorage.setItem("a2mLogin", Ext.encode({
             usuario: cUsuario,
