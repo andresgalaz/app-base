@@ -2,7 +2,7 @@ Ext.define('a2m.Helper', {
     singleton: true,
 
     // rutaServidor: 'https://sistema-desa.hospitalaleman.com/compustrom/',
-    rutaServidor: 'http://192.168.0.5:8080/webDesap_4.0/',
+    rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
 
     usuario: null,
 

@@ -24,17 +24,11 @@ Ext.define('a2m.view.main.MainController', {
 
     onTabChange: function (sender) { //, newRecord, oldRecord, eOpts) {
         var panel = sender.getActiveItem();
-        var RUTA_GLOBAL = '';
-
-        // Valores posibles de Phone y Desktop:  Ext.os.deviceType
-        if (Ext.os.deviceType != 'Desktop') {
-            RUTA_GLOBAL = 'https://desa.snapcar.com.ar/wappTest/'
-        }
         if (!panel || !panel.url || panel.bCargado === true)
             return;
 
         Ext.Ajax.request({
-            url: RUTA_GLOBAL + panel.url,
+            url: a2m.Helper.rutaServidor + panel.url,
             method: 'post',
             success: function (response, opts) {
                 var obj = Ext.decode(response.responseText);
