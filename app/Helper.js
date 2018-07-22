@@ -44,6 +44,47 @@ Ext.define('a2m.Helper', {
         }
     },
 
+    cargaFormulario: function (cAccion, fnCallback) {
+        var cAppName = Ext.getApplication().getName();
+        var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
+        var cNombreClase = cAppName + '.' + cAccion;
+
+        if (Ext.isDefined(cNombreClase)) {
+            objCreado = Ext.create(cAppName + '.' + cAccion);
+            if (typeof (fnCallback) == 'function')
+                fnCallback(objCreado);
+            return;
+        }
+
+        Ext.Ajax.request({
+            url: a2m.Helper.rutaServidor + cUrl,
+            method: 'post',
+            success: function (response, opts) {
+                var srcStr = response.responseText;
+                if (srcStr == null || srcStr == '')
+                    return;
+                console.log('a2m.Helper.cargaFormulario', opts);
+                var objCreado = null;
+                // Comienza con '{', es un objeto plano
+                if (srcStr.match(/^[ \t]*{/) != null) {
+                    objCreado = Ext.decode(srcStr);
+                } else {
+                    try {
+                        Ext.globalEval(srcStr);
+                        objCreado = Ext.create(cAppName + '.' + cAccion);
+                    } catch (e) {
+                        console.error('Al evaluar fuente o crear objeto por xtype:' + cAccion, e);
+                    }
+                }
+                if (typeof (fnCallback) == 'function')
+                    fnCallback(objCreado);
+            },
+            failure: function (response, opts) {
+                console.error('server-side failure with status code ' + response.status);
+            }
+        })
+    },
+
     creaPeneles: function (menu, oView) {
         // Ext.Viewport.destroy();
         if (oView)
@@ -56,7 +97,8 @@ Ext.define('a2m.Helper', {
         for (i = 0; i < menu.length; i++) {
             m.add({
                 title: menu[i].cNombreRecurso,
-                url: a2m.Helper.rutaServidor + menu[i].cAccion,
+                // url: a2m.Helper.rutaServidor + menu[i].cAccion,
+                url: menu[i].cAccion,
                 iconCls: menu[i].cIconCls,
                 bind: {
                     html: '{cargandoForm}'
@@ -65,14 +107,7 @@ Ext.define('a2m.Helper', {
         }
         // Agrega panel principal al ViewPort
         Ext.Viewport.add(m);
-
-        // var pnLogin = Ext.get('panelLogin');
-        // if (pnLogin) {
-        //     pnLogin.hide();
-        //     pnLogin.destroy();
-        // }
     },
-
 
     grabaLocal: function (cIdData, oJson) {
         var oSalida = Ext.decode(localStorage.getItem("salida")) || {};
@@ -102,8 +137,7 @@ Ext.define('a2m.Helper', {
 
     login: function (cUsuario, cPassword, oView) {
 
-        a2m.Helper.usuario = null;
-
+        oGlobal = {};
         Ext.Ajax.request({
             url: a2m.Helper.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
             method: 'post',
@@ -113,7 +147,6 @@ Ext.define('a2m.Helper', {
                     p: cPassword
                 })),
                 prm_dataSource: 'xgenJNDI'
-                // TODO: Agregar Ext.os.name, Ext.os.deviceType y Ext.browser.identity
             },
             success: function (response, opts) {
                 console.log('login:', response);
@@ -122,8 +155,16 @@ Ext.define('a2m.Helper', {
                     Ext.Msg.alert('Conexión', obj.message);
                     return;
                 }
-                a2m.Helper.usuario = cUsuario;
-                localStorage.setItem("usuario", cUsuario);
+                oGlobal = {
+                    depura: obj.depura,
+                    ambiente: obj.ambiente,
+                    cUsuario: obj.cUsuario,
+                    pUsuario: obj.pUsuario,
+                    cNombre: obj.cNombre,
+                    tpUsuario: obj.tpUsuario,
+                    cEmail: obj.cEmail
+                };
+                localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
                 // Si está todo OK cra paneles
@@ -137,7 +178,7 @@ Ext.define('a2m.Helper', {
 
     validaToken: function (cUsuario, token, oView) {
 
-        a2m.Helper.usuario = null;
+        oGlobal = {};
         console.log({
             u: cUsuario,
             p: token
@@ -165,6 +206,16 @@ Ext.define('a2m.Helper', {
                     });
                     return;
                 }
+                oGlobal = {
+                    depura: obj.depura,
+                    ambiente: obj.ambiente,
+                    cUsuario: obj.cUsuario,
+                    pUsuario: obj.pUsuario,
+                    cNombre: obj.cNombre,
+                    tpUsuario: obj.tpUsuario,
+                    cEmail: obj.cEmail
+                };
+                localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
                 // Si está todo OK cra paneles
@@ -175,4 +226,5 @@ Ext.define('a2m.Helper', {
             }
         });
     }
+
 });

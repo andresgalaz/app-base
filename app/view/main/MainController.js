@@ -13,7 +13,7 @@ Ext.define('a2m.view.main.MainController', {
 
     onConfirm: function (choice) {
         a2m.Helper.someFn('Holas');
-        
+
         if (choice === 'yes') {
             // Nada xy
         }
@@ -27,20 +27,13 @@ Ext.define('a2m.view.main.MainController', {
         if (!panel || !panel.url || panel.bCargado === true)
             return;
 
-        Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + panel.url,
-            method: 'post',
-            success: function (response, opts) {
-                var obj = Ext.decode(response.responseText);
-                console.log(opts);
-                panel.bCargado = true;
-                panel.setHtml(null);
-                panel.add(obj);
-            },
-            failure: function (response, opts) {
-                panel.setHtml('server-side failure with status code ' + response.status);
-            }
-        })
+        a2m.Helper.cargaFormulario(panel.url, function (objCreado) {
+            if (objCreado == null)
+                return;
+            panel.bCargado = true;
+            panel.setHtml(null);
+            panel.add(objCreado);
+        });
     },
 
     onClickButton: function () {
