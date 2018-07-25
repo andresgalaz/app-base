@@ -2,6 +2,7 @@ Ext.define('a2m.Helper', {
     singleton: true,
 
     // rutaServidor: 'https://sistema-desa.hospitalaleman.com/compustrom/',
+    // rutaServidor: 'http://localhost:8080/webDesap_4.0/',
     rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
 
     usuario: null,
@@ -39,7 +40,7 @@ Ext.define('a2m.Helper', {
                 }
             });
         } catch (e) {
-            console.log('inicio:', e);
+            console.error('inicio:', e);
 
         }
     },
@@ -49,10 +50,14 @@ Ext.define('a2m.Helper', {
         var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
         var cNombreClase = cAppName + '.' + cAccion;
 
-        if (Ext.isDefined(cNombreClase)) {
-            objCreado = Ext.create(cAppName + '.' + cAccion);
-            if (typeof (fnCallback) == 'function')
+        if (a2m.Helper.depuraClase.indexOf(cNombreClase)>=0) {
+            try {
+                objCreado = Ext.create(cNombreClase);
+                if (typeof (fnCallback) == 'function')
                 fnCallback(objCreado);
+            } catch (e) {
+                console.error('Al crear formulario clase:' + cNombreClase, e);
+            }
             return;
         }
 
@@ -63,7 +68,7 @@ Ext.define('a2m.Helper', {
                 var srcStr = response.responseText;
                 if (srcStr == null || srcStr == '')
                     return;
-                console.log('a2m.Helper.cargaFormulario', opts);
+
                 var objCreado = null;
                 // Comienza con '{', es un objeto plano
                 if (srcStr.match(/^[ \t]*{/) != null) {
@@ -71,7 +76,7 @@ Ext.define('a2m.Helper', {
                 } else {
                     try {
                         Ext.globalEval(srcStr);
-                        objCreado = Ext.create(cAppName + '.' + cAccion);
+                        objCreado = Ext.create(cNombreClase);
                     } catch (e) {
                         console.error('Al evaluar fuente o crear objeto por xtype:' + cAccion, e);
                     }
@@ -96,8 +101,8 @@ Ext.define('a2m.Helper', {
         // Construye item-tab
         for (i = 0; i < menu.length; i++) {
             m.add({
+                xtype : 'panel',
                 title: menu[i].cNombreRecurso,
-                // url: a2m.Helper.rutaServidor + menu[i].cAccion,
                 url: menu[i].cAccion,
                 iconCls: menu[i].cIconCls,
                 bind: {
@@ -123,12 +128,12 @@ Ext.define('a2m.Helper', {
                 prm_dataSource: 'xgenJNDI'
             },
             success: function (response, opts) {
-                console.log(response);
+                console.log('GrabaLocal:',response);
                 // Grabación exitosa, se elimina la información local
                 localStorage.removeItem("salida");
             },
             failure: function (response, opts) {
-                console.log(response);
+                console.log('GrabaLocal(failure:',response);
                 // Como no se pudo enviar la información, se mantiene localmente
                 localStorage.setItem("salida", Ext.encode(oSalida));
             }
@@ -149,7 +154,6 @@ Ext.define('a2m.Helper', {
                 prm_dataSource: 'xgenJNDI'
             },
             success: function (response, opts) {
-                console.log('login:', response);
                 var obj = Ext.decode(response.responseText);
                 if (!obj.success) {
                     Ext.Msg.alert('Conexión', obj.message);
@@ -179,10 +183,6 @@ Ext.define('a2m.Helper', {
     validaToken: function (cUsuario, token, oView) {
 
         oGlobal = {};
-        console.log({
-            u: cUsuario,
-            p: token
-        });
         Ext.Ajax.request({
             url: a2m.Helper.rutaServidor + 'do/a2m/menuMovilRetoken.bsh',
             method: 'post',
@@ -195,7 +195,6 @@ Ext.define('a2m.Helper', {
                 // TODO: Agregar Ext.os.name, Ext.os.deviceType y Ext.browser.identity
             },
             success: function (response, opts) {
-                console.log('validaToken:', response);
                 var obj = Ext.decode(response.responseText);
                 if (!obj.success) {
                     Ext.Msg.alert('Conexión', obj.message, function () {

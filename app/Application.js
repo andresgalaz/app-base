@@ -20,11 +20,15 @@ Ext.define('a2m.Application', {
         a2m.Helper.inicio();
 
         // Recupera la información de conexión de la información local
-        var cUsuario = localStorage.getItem("usuario");
+        var cUsuario = null;
+        try {
+            cUsuario = Ext.decode(localStorage.getItem("usuario")).cUsuario;
+        } catch (e) {
+            console.error("usuario no es un objeto", e);
+        }
         var token = localStorage.getItem("token");
-        console.log("token:", token);
         // Verifica que los datos existan y que este conectado
-        if (cUsuario!=null && token!=null) {
+        if (cUsuario != null && token != null) {
             a2m.Helper.validaToken(cUsuario, token, null);
         } else {
             // arma ventana de Login

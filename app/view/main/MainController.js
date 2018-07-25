@@ -31,14 +31,16 @@ Ext.define('a2m.view.main.MainController', {
             if (objCreado == null)
                 return;
             panel.bCargado = true;
-            panel.setHtml(null);
+            // panel.setHtml(null);
+            panel.setBind({
+                html: null
+            });
             panel.add(objCreado);
         });
     },
 
     onClickButton: function () {
         var a2mLogin = Ext.decode(localStorage.getItem("a2mLogin"));
-        console.log(a2mLogin);
         // Remove the localStorage key/value
         localStorage.removeItem('a2mLogin');
 
