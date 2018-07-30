@@ -21,7 +21,7 @@ Ext.define('a2m.view.main.Main', {
         }
     },
 
-    tabBarPosition: 'top',
+    tabBarPosition: 'bottom',
 
     items: [],
     listeners: {

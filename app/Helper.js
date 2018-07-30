@@ -2,9 +2,9 @@ Ext.define('a2m.Helper', {
     singleton: true,
 
     // rutaServidor: 'https://sistema-desa.hospitalaleman.com/compustrom/',
-    // rutaServidor: 'http://localhost:8080/webDesap_4.0/',
-    rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
-
+    // rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
+    rutaServidor: 'http://192.168.0.5:8080/webDesap_4.0/',
+    
     usuario: null,
 
     inicio: function () {
@@ -41,7 +41,7 @@ Ext.define('a2m.Helper', {
             });
         } catch (e) {
             console.error('inicio:', e);
-
+            alert('inicio:'+e.getMessage());
         }
     },
 
@@ -50,13 +50,15 @@ Ext.define('a2m.Helper', {
         var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
         var cNombreClase = cAppName + '.' + cAccion;
 
-        if (a2m.Helper.depuraClase.indexOf(cNombreClase)>=0) {
+        if (a2m.Helper.depuraClase && a2m.Helper.depuraClase.indexOf(cNombreClase)>=0) {
             try {
                 objCreado = Ext.create(cNombreClase);
                 if (typeof (fnCallback) == 'function')
                 fnCallback(objCreado);
             } catch (e) {
                 console.error('Al crear formulario clase:' + cNombreClase, e);
+                alert('Al crear formulario clase:' + cNombreClase+e.getMessage());
+
             }
             return;
         }
@@ -79,6 +81,8 @@ Ext.define('a2m.Helper', {
                         objCreado = Ext.create(cNombreClase);
                     } catch (e) {
                         console.error('Al evaluar fuente o crear objeto por xtype:' + cAccion, e);
+                        alert('Al evaluar fuente o crear objeto por xtype:' + cAccion+e.getMessage());
+
                     }
                 }
                 if (typeof (fnCallback) == 'function')
@@ -86,6 +90,7 @@ Ext.define('a2m.Helper', {
             },
             failure: function (response, opts) {
                 console.error('server-side failure with status code ' + response.status);
+                alert('server-side failure with status code ' + response.status+e.getMessage());
             }
         })
     },

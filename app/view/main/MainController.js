@@ -31,7 +31,7 @@ Ext.define('a2m.view.main.MainController', {
             if (objCreado == null)
                 return;
             panel.bCargado = true;
-            // panel.setHtml(null);
+            panel.setHtml(null);
             panel.setBind({
                 html: null
             });
