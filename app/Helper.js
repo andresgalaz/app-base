@@ -4,7 +4,7 @@ Ext.define('a2m.Helper', {
     // rutaServidor: 'https://sistema-desa.hospitalaleman.com/compustrom/',
     // rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
     rutaServidor: 'http://192.168.0.5:8080/webDesap_4.0/',
-    
+
     usuario: null,
 
     inicio: function () {
@@ -41,7 +41,7 @@ Ext.define('a2m.Helper', {
             });
         } catch (e) {
             console.error('inicio:', e);
-            alert('inicio:'+e.getMessage());
+            alert('inicio:' + e.getMessage());
         }
     },
 
@@ -50,19 +50,27 @@ Ext.define('a2m.Helper', {
         var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
         var cNombreClase = cAppName + '.' + cAccion;
 
-        if (a2m.Helper.depuraClase && a2m.Helper.depuraClase.indexOf(cNombreClase)>=0) {
+        if (a2m.Helper.depuraClase && a2m.Helper.depuraClase.indexOf(cNombreClase) >= 0) {
             try {
                 objCreado = Ext.create(cNombreClase);
                 if (typeof (fnCallback) == 'function')
-                fnCallback(objCreado);
+                    fnCallback(objCreado);
             } catch (e) {
                 console.error('Al crear formulario clase:' + cNombreClase, e);
-                alert('Al crear formulario clase:' + cNombreClase+e.getMessage());
+                alert('Al crear formulario clase:' + cNombreClase + e.getMessage());
 
             }
             return;
         }
 
+        Ext.require(cNombreClase, function () {
+            var objCreado = Ext.create(cNombreClase);
+            if (typeof (fnCallback) == 'function')
+                fnCallback(objCreado);
+
+        });
+
+        /*
         Ext.Ajax.request({
             url: a2m.Helper.rutaServidor + cUrl,
             method: 'post',
@@ -93,6 +101,7 @@ Ext.define('a2m.Helper', {
                 alert('server-side failure with status code ' + response.status+e.getMessage());
             }
         })
+        */
     },
 
     creaPeneles: function (menu, oView) {
@@ -106,7 +115,7 @@ Ext.define('a2m.Helper', {
         // Construye item-tab
         for (i = 0; i < menu.length; i++) {
             m.add({
-                xtype : 'panel',
+                xtype: 'panel',
                 title: menu[i].cNombreRecurso,
                 url: menu[i].cAccion,
                 iconCls: menu[i].cIconCls,
@@ -133,12 +142,12 @@ Ext.define('a2m.Helper', {
                 prm_dataSource: 'xgenJNDI'
             },
             success: function (response, opts) {
-                console.log('GrabaLocal:',response);
+                console.log('GrabaLocal:', response);
                 // Grabación exitosa, se elimina la información local
                 localStorage.removeItem("salida");
             },
             failure: function (response, opts) {
-                console.log('GrabaLocal(failure:',response);
+                console.log('GrabaLocal(failure:', response);
                 // Como no se pudo enviar la información, se mantiene localmente
                 localStorage.setItem("salida", Ext.encode(oSalida));
             }
