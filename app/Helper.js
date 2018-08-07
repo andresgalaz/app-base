@@ -155,6 +155,34 @@ Ext.define('a2m.Helper', {
         });
     },
 
+    jsonCall: function (params, fnCallback) {
+        Ext.Ajax.request({
+            url: a2m.Helper.rutaServidor + 'do/jsonCall',
+            data : params,
+            method: 'post',
+            success: function (response, opts) {
+                var srcStr = response.responseText;
+                var objResp = null;
+                if (srcStr == null || srcStr == '')
+                    objResp = null;
+                else {
+                    // Comienza con '{', es un JSON y se convierte a objeto
+                    if (srcStr.match(/^[ \t]*[{]/) != null) 
+                        objResp = Ext.decode(srcStr);
+                     else 
+                        objResp = srcStr;
+                    
+                }
+                if (typeof (fnCallback) == 'function')
+                    fnCallback(objResp);
+            },
+            failure: function (response, opts) {
+                console.error('server-side failure with status code ' + response.status);
+                alert('server-side failure with status code ' + response.status+e.getMessage());
+            }
+        })
+    },
+
     login: function (cUsuario, cPassword, oView) {
 
         oGlobal = {};
