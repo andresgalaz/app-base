@@ -1,26 +1,51 @@
 Ext.define('a2m.view.main.Main', {
-    extend: 'Ext.tab.Panel',
-    xtype: 'app-main',
+    extend: 'Ext.navigation.View',
 
     requires: [
-        'Ext.MessageBox',
-        'Ext.layout.Fit'
+        'Ext.Button',
+        'Ext.list.Tree',
+        'Ext.navigation.View',
+
+        'a2m.view.main.MainViewModel',
+        'a2m.view.main.MainController'
     ],
 
     controller: 'main',
     viewModel: 'main',
 
-    defaults: {
-        tab: {
-            iconAlign: 'top'
+    navigationBar: false,
+    userCls: 'main-container',
+
+    items: [
+        {
+            xtype: 'maintoolbar',
+            docked: 'top',
+            userCls: 'main-toolbar',
+            shadow: true
+        }, 
+        {
+            xtype: 'container',
+            docked: 'left',
+            userCls: 'main-nav-container',
+            reference: 'navigation',
+            layout: 'fit',
+            items: [
+                {
+                    xtype: 'treelist',
+                    reference: 'navigationTree',
+                    scrollable: true,
+                    ui: 'nav',
+                    bind : {
+                        store: '{stNavigationTree}',
+                    },
+                    expanderFirst: false,
+                    expanderOnly: false,
+                    listeners: {
+                        itemclick: 'onNavigationItemClick',
+                        selectionchange: 'onNavigationTreeSelectionChange'
+                    }
+                }
+            ]
         }
-    },
-
-    tabBarPosition: 'bottom',
-
-    items: [],
-    listeners: {
-        activeItemchange: 'onTabChange'
-
-    }
+    ]
 });

@@ -12,7 +12,4 @@ Ext.application({
         // so that application classes do not need to require each other.
         'a2m.*', 'Ext.grid.Grid', 'Ext.data.JsonStore', 'Ext.scroll.Scroller', 'Ext.field.*', 'Ext.util.Base64'
     ],
-
-    // The name of the initial view to create.
-    // mainView: 'a2m.view.main.Main'
 });

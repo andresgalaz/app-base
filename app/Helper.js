@@ -110,9 +110,7 @@ Ext.define('a2m.Helper', {
         if (oView)
             oView.destroy();
         // Crea panel principal
-        var m = Ext.create({
-            xtype: 'app-main'
-        });
+        var m = Ext.create('a2m.view.main.Main');
         // Construye item-tab
         for (i = 0; i < menu.length; i++) {
             m.add({

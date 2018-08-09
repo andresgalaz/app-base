@@ -8,12 +8,20 @@ Ext.define('a2m.Application', {
 
     name: 'a2m',
 
-    quickTips: false,
-    platformConfig: {
-        desktop: {
-            quickTips: true
-        }
-    },
+    mainView: 'a2m.view.main.Main',
+    defaultToken : '',
+
+    profiles: [
+        'Phone',
+        'Tablet'
+    ],
+
+    // quickTips: false,
+    // platformConfig: {
+    //     desktop: {
+    //         quickTips: true
+    //     }
+    // },
 
     launch: function () {
 
