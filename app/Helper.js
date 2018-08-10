@@ -105,8 +105,25 @@ Ext.define('a2m.Helper', {
         */
     },
 
+    creaMenuArbol: function(menu, oView) {
+        var main = Ext.getApplication().getMainView(),
+            store = main.getViewModel().getStore('stNavigationTree');
+
+        console.log('[creaMenuArbol] store', store);
+        console.log('[creaMenuArbol] menu', menu);
+
+        if (oView)
+            oView.destroy();
+
+        store.loadData(menu);
+        store.load();
+    },
+
+    // DEPRECATED !!!
     creaPeneles: function (menu, oView) {
         // Ext.Viewport.destroy();
+        console.warn('[creaPeneles] Deprecado!');
+
         if (oView)
             oView.destroy();
         // Crea panel principal
@@ -182,6 +199,7 @@ Ext.define('a2m.Helper', {
     },
 
     login: function (cUsuario, cPassword, oView) {
+        var me = this;
 
         oGlobal = {};
         Ext.Ajax.request({
@@ -212,8 +230,10 @@ Ext.define('a2m.Helper', {
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
-                // Si está todo OK cra paneles
-                a2m.Helper.creaPeneles(obj.menu, oView);
+                // Si está todo OK carga items del menu principal
+                me.creaMenuArbol(obj.menu, oView);
+
+                // a2m.Helper.creaPeneles(obj.menu, oView);
             },
             failure: function (response, opts) {
                 console.error(response);

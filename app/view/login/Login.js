@@ -1,39 +1,51 @@
-
 Ext.define('a2m.view.login.Login', {
-    extend: 'Ext.Dialog',
+    extend: 'a2m.view.login.AuthBase',
     xtype: 'login',
 
     requires: [
-        'a2m.view.login.LoginController',
-        'Ext.form.Panel'
+        'Ext.form.Panel',
+        'Ext.field.Text',
+        'Ext.field.Password',
+        'Ext.layout.HBox'
     ],
-
-    controller: 'login',
-    bodyPadding: 10,
-    title: 'Login Window',
-    closable: false,
-    autoShow: true,
-
-    items: {
-        xtype: 'formpanel',
-        reference: 'form',
-        items: [{
-            xtype: 'textfield',
-            name: 'fldUsuario',
-            label: 'Usuario',
-            allowBlank: false
-        }, {
-            xtype: 'textfield',
-            name: 'fldPassword',
-            inputType: 'password',
-            label: 'Contraseña',
-            allowBlank: false
-        }],
-        buttons: [{
-            text: 'Login',
-            formBind: true,
-            handler: 'onLoginClick'
-            
-        }]
-    }
+    
+    items: [
+        {
+            xtype: 'formpanel',
+            reference: 'frmLogin',
+            padding: 20,
+            width: 300,
+            defaults: {
+                margin: '0 0 10 0'
+            },
+            items: [
+                {
+                    xtype: 'textfield',
+                    name: 'usuario',
+                    placeholder: 'Usuario',
+                    allowBlank: false
+                }, 
+                {
+                    xtype: 'passwordfield',
+                    name: 'password',
+                    placeholder: 'Contraseña',
+                    allowBlank: false
+                }, 
+                {
+                    xtype: 'component',
+                    html: '<a href="#passwordreset">Recuperar Contraseña</a>',
+                    // margin: '7 0 0 45'
+                },
+                {
+                    xtype: 'button',
+                    width: '100%',
+                    text: 'Ingresar',
+                    iconAlign: 'right',
+                    iconCls: 'x-fa fa-angle-right',
+                    ui: 'confirm',
+                    handler: 'onLoginClick'
+                }
+            ]
+        }
+    ]
 });

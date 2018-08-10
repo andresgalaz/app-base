@@ -3,7 +3,9 @@ Ext.define('a2m.view.main.MainViewModel', {
     alias: 'viewmodel.main',
 
     data: {
-        currentView: null
+        currentView: null,
+        cargandoForm: "<h3>Cargando Formulario ... espere</h3>",
+        name: "a2m"
     },
         
     stores: {
@@ -26,19 +28,19 @@ Ext.define('a2m.view.main.MainViewModel', {
                 expanded: true
             },
 
-            proxy: {
-                url : '../do/PE/menuGet.bsh',
-                type : 'ajax',
-                reader : {
-                    type : 'json',
-                    rootProperty : 'children',
-                    successProperty : 'success'
-                },
-                extraParams : {
-                    cCodArbol: '04', //Corresponde al codigo arbol menu de appPE en Compustrom / Adm. Menu
-                    prm_dataSource: "xgenJNDI"
-                }
-            }, 
+            // proxy: {
+            //     url : '../do/PE/menuGet.bsh',
+            //     type : 'ajax',
+            //     reader : {
+            //         type : 'json',
+            //         rootProperty : 'children',
+            //         successProperty : 'success'
+            //     },
+            //     extraParams : {
+            //         cCodArbol: '04', //Corresponde al codigo arbol menu de appPE en Compustrom / Adm. Menu
+            //         prm_dataSource: "xgenJNDI"
+            //     }
+            // }, 
         }
     }
 });

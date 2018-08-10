@@ -14,7 +14,7 @@ Ext.define('a2m.view.main.Toolbar', {
             xtype: 'component',
             reference: 'logo',
             userCls: 'main-logo',
-            html: 'App PE - Profesionales'
+            html: '<b>App PE</b> Profesionales'
         }, 
         {
             ui: 'header',
