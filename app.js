@@ -5,7 +5,8 @@ Ext.application({
     extend: 'a2m.Application',
     name: 'a2m',
     requires: [
-        'a2m.*', 'Ext.grid.Grid', 'Ext.data.JsonStore', 'Ext.scroll.Scroller', 'Ext.field.*', 'Ext.util.Base64'
+        'a2m.*', 'Ext.grid.Grid', 'Ext.data.JsonStore', 'Ext.scroll.Scroller', 'Ext.field.*', 'Ext.util.Base64',
+        'Ext.Img'
     ],
     mainView: 'a2m.view.main.Main'
 

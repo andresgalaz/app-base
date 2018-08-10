@@ -4,11 +4,11 @@ Ext.define('a2m.view.login.LoginController', {
 
     onLoginClick: function (sender) {
         var me = this,
-            refs = me.getReferences(),
-            form = refs.formpanel,
-            vals = form.getValues;
-        
-        if (form.isValid()) {
+            // refs = me.getReferences(),
+            form = sender.up('formpanel');
+
+        if (form && form.isValid()) {
+            var vals = form.getValues();
             a2m.Helper.login(vals.usuario, vals.password, me.getView());
         }
         // Obtiene los valores de los cmapos del formulario de Login

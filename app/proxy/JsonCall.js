@@ -25,7 +25,7 @@ Ext.define('a2m.proxy.JsonCall', {
                         fn: function(btn) {
                             if (btn === 'ok') {
                                 me.pnLogin = Ext.create({
-                                    xtype : 'login',
+                                    xtype : 'a2m-login',
                                     listeners: {
                                         close: 'onLoginOk'
                                     }

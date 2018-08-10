@@ -1,10 +1,7 @@
 Ext.define('a2m.view.login.PasswordReset', {
     extend: 'a2m.view.login.AuthBase',
-    xtype: 'passwordreset',
-
-    requires: [
-        'Ext.field.Email'
-    ],
+    xtype: 'a2m-passwordReset',
+    requires: ['Ext.field.Email'],
 
     items: [{
         xtype: 'panel',

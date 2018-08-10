@@ -1,9 +1,5 @@
 Ext.define('a2m.Helper', {
     singleton: true,
-
-    // rutaServidor: 'https://sistema-desa.hospitalaleman.com/compustrom/',
-    // rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
-    // rutaServidor: 'http://192.168.0.5:8080/webDesap_4.0/',
     rutaServidor: '../',
 
     usuario: null,
@@ -70,56 +66,20 @@ Ext.define('a2m.Helper', {
                 fnCallback(objCreado);
 
         });
-
-        /*
-        Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + cUrl,
-            method: 'post',
-            success: function (response, opts) {
-                var srcStr = response.responseText;
-                if (srcStr == null || srcStr == '')
-                    return;
-
-                var objCreado = null;
-                // Comienza con '{', es un objeto plano
-                if (srcStr.match(/^[ \t]*{/) != null) {
-                    objCreado = Ext.decode(srcStr);
-                } else {
-                    try {
-                        Ext.globalEval(srcStr);
-                        objCreado = Ext.create(cNombreClase);
-                    } catch (e) {
-                        console.error('Al evaluar fuente o crear objeto por xtype:' + cAccion, e);
-                        alert('Al evaluar fuente o crear objeto por xtype:' + cAccion+e.getMessage());
-
-                    }
-                }
-                if (typeof (fnCallback) == 'function')
-                    fnCallback(objCreado);
-            },
-            failure: function (response, opts) {
-                console.error('server-side failure with status code ' + response.status);
-                alert('server-side failure with status code ' + response.status+e.getMessage());
-            }
-        })
-        */
     },
 
-    creaMenuArbol: function(menu, oView) {
+    creaMenuArbol: function (menu, oView) {
         var main = Ext.getApplication().getMainView(),
             store = main.getViewModel().getStore('stNavigationTree');
-
-        console.log('[creaMenuArbol] store', store);
-        console.log('[creaMenuArbol] menu', menu);
-
         if (oView)
             oView.destroy();
-
-        store.loadData(menu);
-        store.load();
+        store.setRoot({
+            expanded: true,
+            children: menu
+        })
     },
 
-    // DEPRECATED !!!
+    /*
     creaPeneles: function (menu, oView) {
         // Ext.Viewport.destroy();
         console.warn('[creaPeneles] Deprecado!');
@@ -143,6 +103,7 @@ Ext.define('a2m.Helper', {
         // Agrega panel principal al ViewPort
         Ext.Viewport.add(m);
     },
+    */
 
     grabaLocal: function (cIdData, oJson) {
         var oSalida = Ext.decode(localStorage.getItem("salida")) || {};
@@ -173,7 +134,7 @@ Ext.define('a2m.Helper', {
     jsonCall: function (params, fnCallback) {
         Ext.Ajax.request({
             url: a2m.Helper.rutaServidor + 'do/jsonCall',
-            data : params,
+            data: params,
             method: 'post',
             success: function (response, opts) {
                 var srcStr = response.responseText;
@@ -182,18 +143,18 @@ Ext.define('a2m.Helper', {
                     objResp = null;
                 else {
                     // Comienza con '{', es un JSON y se convierte a objeto
-                    if (srcStr.match(/^[ \t]*[{]/) != null) 
+                    if (srcStr.match(/^[ \t]*[{]/) != null)
                         objResp = Ext.decode(srcStr);
-                     else 
+                    else
                         objResp = srcStr;
-                    
+
                 }
                 if (typeof (fnCallback) == 'function')
                     fnCallback(objResp);
             },
             failure: function (response, opts) {
                 console.error('server-side failure with status code ' + response.status);
-                alert('server-side failure with status code ' + response.status+e.getMessage());
+                alert('server-side failure with status code ' + response.status + e.getMessage());
             }
         })
     },
@@ -203,7 +164,7 @@ Ext.define('a2m.Helper', {
 
         oGlobal = {};
         Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
+            url: me.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
             method: 'post',
             params: {
                 prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
@@ -242,10 +203,11 @@ Ext.define('a2m.Helper', {
     },
 
     validaToken: function (cUsuario, token, oView) {
+        var me = this;
 
         oGlobal = {};
         Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + 'do/a2m/menuMovilRetoken.bsh',
+            url: me.rutaServidor + 'do/a2m/menuMovilRetoken.bsh',
             method: 'post',
             params: {
                 prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
@@ -261,7 +223,7 @@ Ext.define('a2m.Helper', {
                     Ext.Msg.alert('Conexión', obj.message, function () {
                         // Muestra el mensaje de error del token y levanta el ventana de login
                         Ext.create({
-                            xtype: 'login'
+                            xtype: 'a2m-login'
                         }).show();
                     });
                     return;
@@ -278,8 +240,8 @@ Ext.define('a2m.Helper', {
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
-                // Si está todo OK cra paneles
-                a2m.Helper.creaPeneles(obj.menu, oView);
+                // Si está todo OK carga items del menu principal
+                me.creaMenuArbol(obj.menu, oView);
             },
             failure: function (response, opts) {
                 console.error(response);

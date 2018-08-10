@@ -5,10 +5,8 @@
  */
 Ext.define('a2m.Application', {
     extend: 'Ext.app.Application',
-
     name: 'a2m',
-
-    mainView: 'a2m.view.main.Main',
+    // mainView: 'a2m.view.main.Main',
     defaultToken : '',
 
     profiles: [
@@ -32,7 +30,7 @@ Ext.define('a2m.Application', {
         try {
             cUsuario = Ext.decode(localStorage.getItem("usuario")).cUsuario;
         } catch (e) {
-            console.error("usuario no es un objeto", e);
+            // console.error("usuario no es un objeto", e);
         }
         var token = localStorage.getItem("token");
         // Verifica que los datos existan y que este conectado
@@ -41,7 +39,7 @@ Ext.define('a2m.Application', {
         } else {
             // arma ventana de Login
             Ext.create({
-                xtype: 'login'
+                xtype: 'a2m-login'
             }).show();
         }
 
