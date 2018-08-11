@@ -213,8 +213,8 @@ a {
 }
 
 $small-image-size: 35px;
-$logo-image-width: 17px;
-$logo-image-height: 26px;
+$logo-image-width: 50px;
+$logo-image-height: 24px;
 
 .small-image {
     width: $small-image-size;
@@ -260,7 +260,7 @@ $logo-image-height: 26px;
         position: absolute;
         background-size: cover;
         top: ($main-toolbar-height - $logo-image-height) / 2;
-        left: 22px;
+        left: 4px;
         width: $logo-image-width;
         height: $logo-image-height;
         background: transparent url(images/HA_logo.png) no-repeat center center;
