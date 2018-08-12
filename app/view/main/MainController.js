@@ -50,6 +50,12 @@ Ext.define('a2m.view.main.MainController', {
 
 
     onNavigationItemClick: function (tree, info) {
+        var me = this;
+	    a2m.Helper.cargaFormulario( info.node.data.viewType, function(){
+            me.setCurrentView(info.node.data.viewType);
+        } );
+        console.log('onNavigationItemClick');
+        
         if (info.select) {
             // If we click a selectable node, slide out the navigation tree. We cannot
             // use select event for this since the user may tap the currently selected
@@ -72,7 +78,8 @@ Ext.define('a2m.view.main.MainController', {
     },
 
     setCurrentView: function (hashTag) {
-        hashTag = (hashTag || '').toLowerCase();
+        // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
+        // hashTag = (hashTag || '').toLowerCase();
 
         var view = this.getView(),
             navigationTree = this.lookup('navigationTree'),
