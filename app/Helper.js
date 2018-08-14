@@ -1,6 +1,7 @@
 Ext.define('a2m.Helper', {
     singleton: true,
     rutaServidor: '../',
+    // rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
 
     usuario: null,
 
@@ -71,8 +72,10 @@ Ext.define('a2m.Helper', {
     creaMenuArbol: function (menu, oView) {
         var main = Ext.getApplication().getMainView(),
             store = main.getViewModel().getStore('stNavigationTree');
+        
         if (oView)
             oView.destroy();
+
         store.setRoot({
             expanded: true,
             children: menu
@@ -159,48 +162,48 @@ Ext.define('a2m.Helper', {
         })
     },
 
-    login: function (cUsuario, cPassword, oView) {
-        var me = this;
+    // login: function (cUsuario, cPassword, oView) {
+    //     var me = this;
 
-        oGlobal = {};
-        Ext.Ajax.request({
-            url: me.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
-            method: 'post',
-            params: {
-                prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
-                    u: cUsuario,
-                    p: cPassword
-                })),
-                prm_dataSource: 'xgenJNDI'
-            },
-            success: function (response, opts) {
-                var obj = Ext.decode(response.responseText);
-                if (!obj.success) {
-                    Ext.Msg.alert('Conexión', obj.message);
-                    return;
-                }
-                oGlobal = {
-                    depura: obj.depura,
-                    ambiente: obj.ambiente,
-                    cUsuario: obj.cUsuario,
-                    pUsuario: obj.pUsuario,
-                    cNombre: obj.cNombre,
-                    tpUsuario: obj.tpUsuario,
-                    cEmail: obj.cEmail
-                };
-                localStorage.setItem("usuario", Ext.encode(oGlobal));
-                localStorage.setItem("menu", Ext.encode(obj.menu));
-                localStorage.setItem("token", obj.token);
-                // Si está todo OK carga items del menu principal
-                me.creaMenuArbol(obj.menu, oView);
+    //     oGlobal = {};
+    //     Ext.Ajax.request({
+    //         url: me.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
+    //         method: 'post',
+    //         params: {
+    //             prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
+    //                 u: cUsuario,
+    //                 p: cPassword
+    //             })),
+    //             prm_dataSource: 'xgenJNDI'
+    //         },
+    //         success: function (response, opts) {
+    //             var obj = Ext.decode(response.responseText);
+    //             if (!obj.success) {
+    //                 Ext.Msg.alert('Conexión', obj.message);
+    //                 return;
+    //             }
+    //             oGlobal = {
+    //                 depura: obj.depura,
+    //                 ambiente: obj.ambiente,
+    //                 cUsuario: obj.cUsuario,
+    //                 pUsuario: obj.pUsuario,
+    //                 cNombre: obj.cNombre,
+    //                 tpUsuario: obj.tpUsuario,
+    //                 cEmail: obj.cEmail
+    //             };
+    //             localStorage.setItem("usuario", Ext.encode(oGlobal));
+    //             localStorage.setItem("menu", Ext.encode(obj.menu));
+    //             localStorage.setItem("token", obj.token);
+    //             // Si está todo OK carga items del menu principal
+    //             me.creaMenuArbol(obj.menu, oView);
 
-                // a2m.Helper.creaPeneles(obj.menu, oView);
-            },
-            failure: function (response, opts) {
-                console.error(response);
-            }
-        });
-    },
+    //             // a2m.Helper.creaPeneles(obj.menu, oView);
+    //         },
+    //         failure: function (response, opts) {
+    //             console.error(response);
+    //         }
+    //     });
+    // },
 
     validaToken: function (cUsuario, token, oView) {
         var me = this;
@@ -223,7 +226,7 @@ Ext.define('a2m.Helper', {
                     Ext.Msg.alert('Conexión', obj.message, function () {
                         // Muestra el mensaje de error del token y levanta el ventana de login
                         Ext.create({
-                            xtype: 'a2m-login'
+                            xtype: 'view.login.Login'
                         }).show();
                     });
                     return;

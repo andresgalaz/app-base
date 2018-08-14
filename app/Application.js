@@ -39,7 +39,7 @@ Ext.define('a2m.Application', {
         } else {
             // arma ventana de Login
             Ext.create({
-                xtype: 'a2m-login'
+                xtype: 'view.login.Login'
             }).show();
         }
 

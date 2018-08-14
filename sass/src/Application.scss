@@ -1,7 +1,187 @@
-// iOS native app status bar does not take up space, so we need to pad out the application by 20px
-// in order to bring the app below it.
+/*
+ *  This file can be used to set variables and supply global styling.  View specific 
+ *  styling should be located the view's corresponding scss file.
+ */
 $enable-font-awesome: dynamic(true);
 
+// iOS native app status bar does not take up space, so we need to pad out the application by 20px
+// in order to bring the app below it.
 body.x-ios.x-webview.x-portrait {
   margin-top: 20px;
 }
+
+@mixin list-item-title() {
+  font-weight: 600;
+  line-height: 20px;
+}
+
+@include button-ui(
+  $ui: 'bright-blue',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: #03a9f5,
+  $border-width: 0
+);
+
+@include button-ui(
+  $ui: 'round',
+  $border-radius: 50%,
+  $border-radius-big: 50%
+);
+
+@include button-ui(
+  $ui: 'header',
+  $color: #999,
+  $icon-color: #999,
+  $background-color: transparent,
+  $border-width: 0
+);
+
+@include button-ui(
+  $ui: 'blue',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: #167abc,
+  $border-width: 0
+);
+
+@include button-ui(
+  $ui: 'facebook',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: $social-facebook-btn-background,
+  $border-color: darken($social-facebook-btn-background, 5%)
+);
+
+@include button-ui(
+  $ui: 'gray-button',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: #a7a7a7,
+  $border-width: 0
+);
+
+@include button-ui(
+  $ui: 'soft-blue',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: $color-soft-blue,
+  $border-color: darken($color-soft-blue, 5%)
+);
+
+@include button-ui(
+  $ui: 'soft-cyan',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: $color-soft-cyan,
+  $border-color: darken($color-soft-cyan, 5%)
+);
+
+@include button-ui(
+  $ui: 'soft-green',
+  $color: #fff,
+  $icon-color: #fff,
+  $pressed-color: #fff,
+  $background-color: $color-soft-green,
+  $border-color: darken($color-soft-green, 5%)
+);
+
+@include button-ui(
+  $ui: 'soft-purple',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: $color-soft-purple,
+  $border-color: darken($color-soft-purple, 5%)
+);
+
+@include button-ui(
+  $ui: 'soft-red',
+  $color: #fff,
+  $icon-color: #fff,
+  $background-color: $color-soft-red,
+  $border-color: darken($color-soft-red, 5%)
+);
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+};
+
+.x-big .x-button-header .x-icon-el {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+// sass de las distintas vistas a implementar por fuera de este proyecto
+// view PACIENTE
+.listaPacientes-dataview {
+  .imgPaciente {
+      display: inline-block;
+      width: 100px;
+      height: 100px;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: 50%;
+      float: left;
+      border-radius: 5;
+  }
+    
+  .listaMovil {
+      vertical-align: top;
+      padding: 30px 0px 0px 20px;
+      box-shadow: 0 10px 10px -10px #8c8b8b inset;
+  }
+  
+  .margenImagen {
+      margin-left: 110px;
+  }
+  
+  .listaMovil > .titulo {
+      font-size: 18px;
+      font-weight: bold;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .listaMovil > .normal {
+      color: #adadad;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+  .listaMovil .mapa {
+      color: red;
+  }       
+  .listaMovil .activo {
+      color: #2196F3;
+      font-size: 20px;
+  }       
+  .listaMovil .apagado {
+      color: #8c8b8b;
+      font-size: 20px;
+  }     
+}
+
+.pacienteInfo-container {
+  .pacienteInfoImagen {
+      border: 4px solid $base-border-color;
+      @include border-radius($circle-border-radius);
+  }
+
+  .pacienteInfoNombre {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 30px;
+      color: $color;
+  }
+
+  .pacienteInfoPE {
+    color: $color;
+    line-height: 16px;
+  }
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------

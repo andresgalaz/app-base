@@ -1,6 +1,6 @@
 Ext.define('a2m.view.login.Login', {
     extend: 'a2m.view.login.AuthBase',
-    xtype: 'a2m-login',
+    xtype: 'view.login.Login',
 
     requires: [ 
         'Ext.form.Panel', 
@@ -38,10 +38,6 @@ Ext.define('a2m.view.login.Login', {
                     allowBlank: false
                 }, 
                 {
-                    xtype: 'component', 
-                    html: '<a href="#passwordreset">Recuperar Contraseña</a>',
-                }, 
-                {
                     text: 'Ingresar', 
                     xtype: 'button', 
                     handler: 'onLoginClick',
@@ -49,7 +45,11 @@ Ext.define('a2m.view.login.Login', {
                     iconAlign: 'right', 
                     iconCls: 'x-fa fa-angle-right', 
                     ui: 'bright-blue'
-                }
+                },
+                {
+                    xtype: 'component', 
+                    html: '<a href="#view.login.PasswordReset">Recuperar Contraseña</a>',
+                }, 
             ]
         }
     ]
