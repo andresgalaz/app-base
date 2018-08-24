@@ -7,7 +7,7 @@ Ext.define('a2m.Application', {
     extend: 'Ext.app.Application',
     name: 'a2m',
     // mainView: 'a2m.view.main.Main',
-    defaultToken : '',
+    defaultToken : 'view.dashboard.Dashboard',
 
     profiles: [
         'Phone',

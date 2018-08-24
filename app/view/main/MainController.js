@@ -51,9 +51,11 @@ Ext.define('a2m.view.main.MainController', {
 
     onNavigationItemClick: function (tree, info) {
         var me = this;
+
 	    a2m.Helper.cargaFormulario( info.node.data.viewType, function(){
             me.setCurrentView(info.node.data.viewType);
-        } );
+        });
+        
         console.log('onNavigationItemClick');
         
         if (info.select) {
@@ -77,7 +79,7 @@ Ext.define('a2m.view.main.MainController', {
         this.setShowNavigation(!this.getShowNavigation());
     },
 
-    setCurrentView: function (hashTag) {
+    setCurrentViewOld: function (hashTag) {
         // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
         // hashTag = (hashTag || '').toLowerCase();
 
@@ -96,6 +98,34 @@ Ext.define('a2m.view.main.MainController', {
         }
 
         view.setActiveItem(item);
+
+        navigationTree.setSelection(node);
+    },
+
+    setCurrentView: function (hashTag) {
+        // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
+        // hashTag = (hashTag || '').toLowerCase();
+
+        var view = this.getView(),
+            navigationTree = this.lookup('navigationTree'),
+            store = navigationTree.getStore(),
+            node = store.findNode('routeId', hashTag) ||
+                   store.findNode('viewType', hashTag),
+            item = view.child('component[routeId=' + hashTag + ']');
+
+        if (!item) {
+            a2m.Helper.cargaFormulario(hashTag, function(){
+                item = {
+                    xtype: hashTag,
+                    routeId: hashTag
+                };
+
+                view.setActiveItem(item);
+            });
+
+        } else {
+            view.setActiveItem(item);
+        }
 
         navigationTree.setSelection(node);
     },
@@ -176,8 +206,12 @@ Ext.define('a2m.view.main.MainController', {
     },
 
     toolbarButtonClick: function (btn) {
-        var href = btn.config.href;
+        var me = this,
+            href = btn.config.href;
 
-        this.redirectTo(href);
+        // this.redirectTo(href);
+        a2m.Helper.cargaFormulario(href, function(){
+            me.setCurrentView(href);
+        });
     }
 });

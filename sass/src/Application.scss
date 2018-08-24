@@ -102,6 +102,31 @@ body.x-ios.x-webview.x-portrait {
   $border-color: darken($color-soft-red, 5%)
 );
 
+@include button-ui(
+  $ui: 'acciones',
+  $color: $color-soft-red,
+  $icon-color: $color-soft-red,
+  $background-color: transparent,
+  $border-color: darken($color-soft-gray, 5%),
+  $font-size: 18px
+);
+
+@include button-ui(
+  $ui: 'toolbar-inferior-btn',
+  $color: $color-soft-red,
+  $icon-color: $color-soft-red,
+  $background-color: transparent,
+  $border-color: darken($color-soft-gray, 5%),
+  $font-size: 10px !important,
+  $icon-size: 20px
+);
+
+@include toolbar-ui(
+  $ui: 'toolbar-inferior',
+  $border-color: #000000,
+  $border-width: 1px 0 0 0 !important
+);
+
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
@@ -114,7 +139,111 @@ body.x-ios.x-webview.x-portrait {
   font-weight: normal;
 }
 
+
+
 // sass de las distintas vistas a implementar por fuera de este proyecto
+// view DASHBOARD
+$dashboard-item-spacing: dynamic(20px);
+
+.dashboard > .x-body-el {
+    padding: $dashboard-item-spacing 0 0 $dashboard-item-spacing;
+}
+
+.dashboard-item {
+    margin: 0 $dashboard-item-spacing $dashboard-item-spacing 0;
+    float: left;
+    width: calc(100% - #{$dashboard-item-spacing});
+
+    &.last-in-row {
+        margin-right: 0;
+    }
+}
+
+.small-100 {
+    width: calc(100% - #{$dashboard-item-spacing});
+}
+
+.small-60 {
+    width: calc(60% - #{$dashboard-item-spacing});
+}
+
+.small-50 {
+    width: calc(50% - #{$dashboard-item-spacing});
+}
+
+.small-40 {
+    width: calc(40% - #{$dashboard-item-spacing});
+}
+
+.small-20 {
+    width: calc(20% - #{$dashboard-item-spacing});
+}
+
+@media (min-width: 1000px) {
+    .big-100 {
+        width: calc(100% - #{$dashboard-item-spacing});
+    }
+
+    .big-60 {
+        width: calc(60% - #{$dashboard-item-spacing});
+    }
+
+    .big-50 {
+        width: calc(50% - #{$dashboard-item-spacing});
+    }
+
+    .big-40 {
+        width: calc(40% - #{$dashboard-item-spacing});
+    }
+
+    .big-33 {
+        width: calc(33.3% - #{$dashboard-item-spacing});
+    }
+
+    .big-20 {
+        width: calc(20% - #{$dashboard-item-spacing});
+    }
+}
+
+.status-tile {
+  background-color: #fff;
+  border: 3px solid transparent;
+  position: relative;
+  text-align: center;
+}
+
+.status-tile-wrap {
+  position: relative;
+  top: 50%;
+  @include transform(translateY(-50%));
+
+  .status-tile-large > & {
+      font-size: 150%;
+  }
+}
+
+.status-tile-quantity {
+  font-size: 250%;
+  font-weight: 500;
+}
+
+.status-tile-icon-wrap {
+  font-size: 180%;
+}
+
+.status-tile-icon-wrap,
+.status-tile-icon {
+  display: inline-block;
+}
+
+.status-tile-icon-first .status-tile-icon-wrap {
+  width: 2.4em;
+  height: 2.4em;
+  line-height: 2.4em;
+  color: #fff;
+  border-radius: 50%;
+}
+
 // view PACIENTE
 .listaPacientes-dataview {
   .imgPaciente {
@@ -129,9 +258,12 @@ body.x-ios.x-webview.x-portrait {
   }
     
   .listaMovil {
+      overflow: hidden;
+      padding: 20px;
+      border-bottom: 1px solid $border-color;
       vertical-align: top;
-      padding: 30px 0px 0px 20px;
-      box-shadow: 0 10px 10px -10px #8c8b8b inset;
+      // padding: 30px 0px 0px 20px;
+      // box-shadow: 0 10px 10px -10px #8c8b8b inset;
   }
   
   .margenImagen {
@@ -167,20 +299,32 @@ body.x-ios.x-webview.x-portrait {
 
 .pacienteInfo-container {
   .pacienteInfoImagen {
-      border: 4px solid $base-border-color;
-      @include border-radius($circle-border-radius);
+    border: 4px solid $base-border-color;
+    @include border-radius($circle-border-radius);
   }
 
   .pacienteInfoNombre {
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 30px;
-      color: $color;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 30px;
+    color: $color;
   }
 
   .pacienteInfoPE {
     color: $color;
     line-height: 16px;
+  }
+
+  .box {
+    margin-left: 40px;
+    line-height: 14px;
+    font-size: 14px;
+    line-height: 18px;
+
+    &:before {
+      margin-left: -20px;
+      color: $base-color;
+    }
   }
 }
 

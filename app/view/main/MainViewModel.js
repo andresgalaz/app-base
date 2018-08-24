@@ -28,6 +28,12 @@ Ext.define('a2m.view.main.MainViewModel', {
                 expanded: true
             },
 
+            filters: [
+                function(item) {
+                    return item.data.viewType != 'view.dashboard.Dashboard';
+                }
+            ]
+
             // proxy: {
             //     url : '../do/PE/menuGet.bsh',
             //     type : 'ajax',

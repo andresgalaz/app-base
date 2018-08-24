@@ -27,14 +27,14 @@ Ext.define('a2m.view.main.Toolbar', {
         {
             ui: 'header',
             iconCls: 'x-fa fa-envelope',
-            href: '#email',
+            href: 'view.mensajes.Inbox',
             margin: '0 7 0 0',
             handler: 'toolbarButtonClick'
         }, 
         {
             ui: 'header',
             iconCls: 'x-fa fa-th-large',
-            href: '#dashboard',
+            href: 'view.dashboard.Dashboard',
             margin: '0 7 0 0',
             handler: 'toolbarButtonClick'
         }, 
