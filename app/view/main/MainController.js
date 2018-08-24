@@ -29,8 +29,6 @@ Ext.define('a2m.view.main.MainController', {
         var logo = view.lookup('logo'),
             nav = view.lookup('navigation');
 
-        // this.callParent([ view ]);
-
         // Detach the navigation container so we can float it in from the edge.
         nav.getParent().remove(nav, false);
         nav.addCls(['x-floating', 'main-nav-floated', this.slidOutCls]);
@@ -55,7 +53,7 @@ Ext.define('a2m.view.main.MainController', {
 	    a2m.Helper.cargaFormulario( info.node.data.viewType, function(){
             me.setCurrentView(info.node.data.viewType);
         });
-        
+
         console.log('onNavigationItemClick');
         
         if (info.select) {
@@ -79,29 +77,6 @@ Ext.define('a2m.view.main.MainController', {
         this.setShowNavigation(!this.getShowNavigation());
     },
 
-    setCurrentViewOld: function (hashTag) {
-        // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
-        // hashTag = (hashTag || '').toLowerCase();
-
-        var view = this.getView(),
-            navigationTree = this.lookup('navigationTree'),
-            store = navigationTree.getStore(),
-            node = store.findNode('routeId', hashTag) ||
-                   store.findNode('viewType', hashTag),
-            item = view.child('component[routeId=' + hashTag + ']');
-
-        if (!item) {
-            item = {
-                xtype: node.get('viewType'),
-                routeId: hashTag
-            };
-        }
-
-        view.setActiveItem(item);
-
-        navigationTree.setSelection(node);
-    },
-
     setCurrentView: function (hashTag) {
         // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
         // hashTag = (hashTag || '').toLowerCase();
@@ -119,58 +94,16 @@ Ext.define('a2m.view.main.MainController', {
                     xtype: hashTag,
                     routeId: hashTag
                 };
-
-                view.setActiveItem(item);
+                setTimeout(function(){
+                    view.setActiveItem(item);
+                    navigationTree.setSelection(node);
+                }, 500 );
             });
-
-        } else {
-            view.setActiveItem(item);
-        }
-
+            return;
+        } 
+        view.setActiveItem(item);
         navigationTree.setSelection(node);
     },
-
-    // updateShowNavigation: function (showNavigation, oldValue) {
-    //     // Ignore the first update since our initial state is managed specially. This
-    //     // logic depends on view state that must be fully setup before we can toggle
-    //     // things.
-    //     //
-    //     if (oldValue !== undefined) {
-    //         var me = this,
-    //             cls = me.collapsedCls,
-    //             logo = me.lookup('logo'),
-    //             navigation = me.lookup('navigation'),
-    //             navigationTree = me.lookup('navigationTree'),
-    //             rootEl = navigationTree.rootItem.el;
-
-    //         navigation.toggleCls(cls);
-    //         logo.toggleCls(cls);
-
-    //         if (showNavigation) {
-    //             // Restore the text and other decorations before we expand so that they
-    //             // will be revealed properly. The forced width is still in force from
-    //             // the collapse so the items won't wrap.
-    //             navigationTree.setMicro(false);
-    //         } else {
-    //             // Ensure the right-side decorations (they get munged by the animation)
-    //             // get clipped by propping up the width of the tree's root item while we
-    //             // are collapsed.
-    //             rootEl.setWidth(rootEl.getWidth());
-    //         }
-
-    //         logo.element.on({
-    //             single: true,
-    //             transitionend: function () {
-    //                 if (showNavigation) {
-    //                     // after expanding, we should remove the forced width
-    //                     rootEl.setWidth('');
-    //                 } else {
-    //                     navigationTree.setMicro(true);
-    //                 }
-    //             }
-    //         });
-    //     }
-    // },
 
     updateShowNavigation: function (showNavigation, oldValue) {
         // Ignore the first update since our initial state is managed specially. This
@@ -209,7 +142,6 @@ Ext.define('a2m.view.main.MainController', {
         var me = this,
             href = btn.config.href;
 
-        // this.redirectTo(href);
         a2m.Helper.cargaFormulario(href, function(){
             me.setCurrentView(href);
         });

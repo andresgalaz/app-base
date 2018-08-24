@@ -20,7 +20,7 @@
             "background_color": "#054059",
             "display": "standalone",
             "orientation": "portrait",
-            "start_url": "http://webapp2-desa.hospitalaleman.com:8081/compustrom/a2m/index.html"
+            "start_url": "https://sistema-desa.hospitalaleman.com/compustrom/a2m/index.html"
         }
     },
 

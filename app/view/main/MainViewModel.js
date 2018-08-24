@@ -24,29 +24,13 @@ Ext.define('a2m.view.main.MainViewModel', {
 
             clearOnLoad: true, 
 
-            root: {
-                expanded: true
-            },
+            root: { expanded: true },
 
             filters: [
                 function(item) {
                     return item.data.viewType != 'view.dashboard.Dashboard';
                 }
             ]
-
-            // proxy: {
-            //     url : '../do/PE/menuGet.bsh',
-            //     type : 'ajax',
-            //     reader : {
-            //         type : 'json',
-            //         rootProperty : 'children',
-            //         successProperty : 'success'
-            //     },
-            //     extraParams : {
-            //         cCodArbol: '04', //Corresponde al codigo arbol menu de appPE en Compustrom / Adm. Menu
-            //         prm_dataSource: "xgenJNDI"
-            //     }
-            // }, 
         }
     }
 });

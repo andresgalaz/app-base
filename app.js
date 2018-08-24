@@ -12,7 +12,6 @@ Ext.application({
         'Ext.field.*', 
         'Ext.util.Base64',
         'Ext.Img', 
-        // 'Ext.dataview.listswiper.ListSwiper', 
         'Ext.dataview.*',
     ],
     mainView: 'a2m.view.main.Main'

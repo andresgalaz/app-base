@@ -37,12 +37,6 @@ Ext.define('a2m.view.main.Toolbar', {
             href: 'view.dashboard.Dashboard',
             margin: '0 7 0 0',
             handler: 'toolbarButtonClick'
-        }, 
-        // {
-        //     xtype: 'image',
-        //     userCls: 'main-user-image small-image circular',
-        //     alt: 'Current user image',
-        //     src: '<shared>/images/user-profile/2.png'
-        // }
+        } 
     ]
 });

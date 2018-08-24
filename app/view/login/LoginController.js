@@ -3,7 +3,6 @@ Ext.define('a2m.view.login.LoginController', {
     alias: 'controller.login',
 
     init: function(){
-        this.rutaServidor = 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/';
     },
 
     login: function (cUsuario, cPassword, oView) {
@@ -12,7 +11,7 @@ Ext.define('a2m.view.login.LoginController', {
 
         oGlobal = {};
         Ext.Ajax.request({
-            url: me.rutaServidor + 'do/a2m/menuMovilLogin.bsh',
+            url: a2m.Helper.rutaServidor + 'menuMovilLogin.bsh',
             method: 'post',
             params: {
                 prm_data: Ext.util.Base64.encode(Ext.JSON.encode({

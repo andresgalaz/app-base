@@ -1,7 +1,6 @@
 Ext.define('a2m.Helper', {
     singleton: true,
-    rutaServidor: '../',
-    // rutaServidor: 'http://webapp2-desa.hospitalaleman.com:8081/compustrom/',
+    rutaServidor: '../do/a2m/',
 
     usuario: null,
 
@@ -13,7 +12,6 @@ Ext.define('a2m.Helper', {
                 frequency: 600000,
                 listeners: {
                     locationupdate: function (geo) {
-                        // alert('New latitude: ' + geo.getLatitude());
                         a2m.Helper.grabaLocal('gps', {
                             fecha: new Date(),
                             longitud: geo.getLongitude(),
@@ -48,19 +46,6 @@ Ext.define('a2m.Helper', {
         var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
         var cNombreClase = cAppName + '.' + cAccion;
 
-        if (a2m.Helper.depuraClase && a2m.Helper.depuraClase.indexOf(cNombreClase) >= 0) {
-            try {
-                objCreado = Ext.create(cNombreClase);
-                if (typeof (fnCallback) == 'function')
-                    fnCallback(objCreado);
-            } catch (e) {
-                console.error('Al crear formulario clase:' + cNombreClase, e);
-                alert('Al crear formulario clase:' + cNombreClase + e.getMessage());
-
-            }
-            return;
-        }
-
         Ext.require(cNombreClase, function () {
             var objCreado = Ext.create(cNombreClase);
             if (typeof (fnCallback) == 'function')
@@ -71,7 +56,7 @@ Ext.define('a2m.Helper', {
     creaMenuArbol: function (menu, oView) {
         var main = Ext.getApplication().getMainView(),
             store = main.getViewModel().getStore('stNavigationTree');
-        
+
         if (oView)
             oView.destroy();
 
@@ -81,32 +66,6 @@ Ext.define('a2m.Helper', {
         })
     },
 
-    /*
-    creaPeneles: function (menu, oView) {
-        // Ext.Viewport.destroy();
-        console.warn('[creaPeneles] Deprecado!');
-
-        if (oView)
-            oView.destroy();
-        // Crea panel principal
-        var m = Ext.create('a2m.view.main.Main');
-        // Construye item-tab
-        for (i = 0; i < menu.length; i++) {
-            m.add({
-                xtype: 'panel',
-                title: menu[i].cNombreRecurso,
-                url: menu[i].cAccion,
-                iconCls: menu[i].cIconCls,
-                bind: {
-                    html: '{cargandoForm}'
-                }
-            });
-        }
-        // Agrega panel principal al ViewPort
-        Ext.Viewport.add(m);
-    },
-    */
-
     grabaLocal: function (cIdData, oJson) {
         var oSalida = Ext.decode(localStorage.getItem("salida")) || {};
         if (!oSalida[cIdData])
@@ -114,7 +73,7 @@ Ext.define('a2m.Helper', {
         oSalida[cIdData].push(oJson);
 
         Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + 'do/a2m/grabaRemotoProcesa.bsh',
+            url: a2m.Helper.rutaServidor + 'grabaRemotoProcesa.bsh',
             method: 'post',
             params: {
                 prm_data: Ext.util.Base64.encode(Ext.JSON.encode(oSalida)),
@@ -135,7 +94,7 @@ Ext.define('a2m.Helper', {
 
     jsonCall: function (params, fnCallback) {
         Ext.Ajax.request({
-            url: a2m.Helper.rutaServidor + 'do/jsonCall',
+            url: a2m.Helper.rutaServidor + 'jsonCall.bsh',
             data: params,
             method: 'post',
             success: function (response, opts) {
@@ -166,7 +125,7 @@ Ext.define('a2m.Helper', {
 
         oGlobal = {};
         Ext.Ajax.request({
-            url: me.rutaServidor + 'do/a2m/menuMovilRetoken.bsh',
+            url: me.rutaServidor + 'menuMovilRetoken.bsh',
             method: 'post',
             params: {
                 prm_data: Ext.util.Base64.encode(Ext.JSON.encode({
@@ -199,8 +158,11 @@ Ext.define('a2m.Helper', {
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
-                // Si está todo OK carga items del menu principal
-                me.creaMenuArbol(obj.menu, oView);
+                // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
+                setTimeout(function () {
+                    // Si está todo OK carga items del menu principal
+                    me.creaMenuArbol(obj.menu, oView);
+                }, 500);
             },
             failure: function (response, opts) {
                 console.error(response);
