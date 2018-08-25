@@ -1,8 +1,8 @@
 {
     "progressive": {
         "manifest": {
-            "name": "Progressive App",
-            "short_name": "PWA",
+            "name": "Programas Especiales APP Móvil",
+            "short_name": "PE Móvil",
             "icons": [{
                     "src": "resources/pwa96.png",
                     "sizes": "96x96"
@@ -20,7 +20,7 @@
             "background_color": "#054059",
             "display": "standalone",
             "orientation": "portrait",
-            "start_url": "https://sistema-desa.hospitalaleman.com/compustrom/a2m/index.html"
+            "start_url": "index.html"
         }
     },
 
@@ -43,7 +43,7 @@
                 
     "name": "a2m",
     "namespace": "a2m",
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "framework": "ext",
     "toolkit": "modern",
     "theme": "theme-material",

@@ -1,6 +1,6 @@
 Ext.define('a2m.Helper', {
     singleton: true,
-    rutaServidor: '../do/a2m/',
+    rutaServidor: '../doit/a2m/',
 
     usuario: null,
 
