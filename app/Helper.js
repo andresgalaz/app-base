@@ -153,7 +153,8 @@ Ext.define('a2m.Helper', {
                     pUsuario: obj.pUsuario,
                     cNombre: obj.cNombre,
                     tpUsuario: obj.tpUsuario,
-                    cEmail: obj.cEmail
+                    cEmail: obj.cEmail,
+                    perfiles: obj.perfiles
                 };
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
