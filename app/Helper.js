@@ -9,7 +9,7 @@ Ext.define('a2m.Helper', {
             // Va a refrescar la posición cada minuto
             Ext.create('Ext.util.Geolocation', {
                 autoUpdate: true,
-                frequency: 600000,
+                frequency: 600000, // 5 minutos
                 listeners: {
                     locationupdate: function (geo) {
                         a2m.Helper.grabaLocal('gps', {
@@ -23,9 +23,8 @@ Ext.define('a2m.Helper', {
                         if (bTimeout) {
                             a2m.Helper.grabaLocal('gps', {
                                 fecha: new Date(),
-                                error: 'timeour'
+                                error: 'timeout'
                             })
-
                         } else {
                             a2m.Helper.grabaLocal('gps', {
                                 fecha: new Date(),
@@ -66,6 +65,12 @@ Ext.define('a2m.Helper', {
         })
     },
 
+    /**
+     * Graba datos en la memoria local. La información se identifica por el TAG
+     * que viene en el parámetro cIdData, estos TAG se van acumulando como arreglos
+     * en el caso que no se pueda grabar. Si es posible gabar, el objeto 'salida' de
+     * la memoria local es borrado y se vuelve a cero, hasta la siguiente grabación.
+     */
     grabaLocal: function (cIdData, oJson) {
         var oSalida = Ext.decode(localStorage.getItem("salida")) || {};
         if (!oSalida[cIdData])
