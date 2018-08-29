@@ -86,8 +86,14 @@ Ext.define('a2m.Helper', {
             },
             success: function (response, opts) {
                 console.log('GrabaLocal:', response);
-                // Grabación exitosa, se elimina la información local
-                localStorage.removeItem("salida");
+                var resp = Ext.decode(response.responseText);
+                if (resp.success) {
+                    // Grabación exitosa, se elimina la información local
+                    localStorage.removeItem("salida");
+                } else {
+                    // Como no se pudo enviar la información, se mantiene localmente
+                    localStorage.setItem("salida", Ext.encode(oSalida));
+                }
             },
             failure: function (response, opts) {
                 console.log('GrabaLocal(failure:', response);
