@@ -15,7 +15,8 @@ Ext.define('a2m.Helper', {
                         a2m.Helper.grabaLocal('gps', {
                             fecha: new Date(),
                             longitud: geo.getLongitude(),
-                            latitud: geo.getLatitude()
+                            latitud: geo.getLatitude(),
+                            usuarioId: oGlobal.pUsuario
                         })
                         console.log('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
                     },
