@@ -31,8 +31,10 @@ body.x-ios.x-webview.x-portrait {
 
 @include button-ui(
   $ui: 'header',
-  $color: #999,
-  $icon-color: #999,
+  // $color: #999,
+  // $icon-color: #999,
+  $color: #fff,
+  $icon-color: #fff,
   $background-color: transparent,
   $border-width: 0
 );
@@ -123,8 +125,23 @@ body.x-ios.x-webview.x-portrait {
 
 @include toolbar-ui(
   $ui: 'toolbar-inferior',
-  $border-color: #000000,
+  $border-color: #000000 !important,
   $border-width: 1px 0 0 0 !important
+);
+
+@include toolbar-ui(
+  $ui: 'toolbar-principal',
+  $background-color: #ec6273
+);
+
+@include toolbar-ui(
+  $ui: 'toolbar-secundaria',
+  $background-color: #be4296
+);
+
+@include titlebar-ui(
+  $ui: 'titlebar-superior',
+  $background-color: #ec6273
 );
 
 @mixin border-radius($radius) {
@@ -138,8 +155,6 @@ body.x-ios.x-webview.x-portrait {
   font-size: 18px;
   font-weight: normal;
 }
-
-
 
 // sass de las distintas vistas a implementar por fuera de este proyecto
 // view DASHBOARD

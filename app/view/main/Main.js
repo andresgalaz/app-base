@@ -15,7 +15,8 @@ Ext.define('a2m.view.main.Main', {
     items: [{
         xtype: 'maintoolbar',
         docked: 'top',
-        userCls: 'main-toolbar',
+        // userCls: 'main-toolbar',
+        ui: 'toolbar-principal',
         shadow: true
     }, {
         xtype: 'container',
