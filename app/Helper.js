@@ -16,7 +16,7 @@ Ext.define('a2m.Helper', {
                             fecha: new Date(),
                             longitud: geo.getLongitude(),
                             latitud: geo.getLatitude(),
-                            usuarioId: oGlobal.pUsuario
+                            usuario_id: oGlobal.pUsuario
                         })
                         console.log('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
                     },
