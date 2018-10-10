@@ -1,0 +1,14 @@
+URL:
+    https://kafka-desa.hospitalaleman.com/topics/portalPushRequest
+
+JSON Send:
+    { "records":[{
+             "value":{
+                   "documento":"18098459",
+                   "titulo":"Prueba Mensaje",
+                   "mensaje":"A ver Tinch"
+              }
+    }]}
+
+Ya le comenté a Gonza y quedó que va a averiguar si Martín Ksañetz es/será el Firebase Administrator.
+Probablemente se olvide. Contactalo y recordale la inquietud.
