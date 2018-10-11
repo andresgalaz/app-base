@@ -1,1 +1,2 @@
-sencha app build testing && cp 'build/testing/a2m/app.js' '../../webDesap4/desa/a2m/app.js'
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+sencha app build testing && ./comparaDesaProd.sh

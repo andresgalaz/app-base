@@ -3,6 +3,7 @@ Ext.define('a2m.Helper', {
     rutaServidor: '../doit/a2m/',
 
     usuario: null,
+    messaging: null,
 
     inicio: function () {
         try {
@@ -38,6 +39,106 @@ Ext.define('a2m.Helper', {
         } catch (e) {
             console.error('inicio:', e);
             alert('inicio:' + e.getMessage());
+        }
+
+        try {
+
+            var msg = firebase.messaging();
+            msg.usePublicVapidKey('BCuSqDX6UM5fTxVBaRIrCOJldhA0T4nBiq2Z4f4C0jDrcdbjUbK2q2N8IeRS9etRsOssHeYNfsL7o13JFfBvIIU');
+
+            navigator.serviceWorker.register('./firebase-messaging-sw.js')
+                .then((registration) => {
+                    msg.useServiceWorker(registration);
+                    console.log('registration:', registration);
+
+                    // Request permission and get token.....
+                    msg.requestPermission().then(function () {
+                        console.log('Notification permission granted.');
+                        // TODO(developer): Retrieve an Instance ID token for use with FCM.
+                        // ...
+
+                        // Get Instance ID token. Initially this makes a network call, once retrieved
+                        // subsequent calls to getToken will return from cache.
+                        msg.getToken().then(function (currentToken) {
+                            console.log('currentToken:', currentToken);
+                            if (currentToken) {
+                                sendTokenToServer(currentToken);
+                                updateUIForPushEnabled(currentToken);
+                            } else {
+                                // Show permission request.
+                                console.log('No Instance ID token available. Request permission to generate one.');
+                                // Show permission UI.
+                                updateUIForPushPermissionRequired();
+                                setTokenSentToServer(false);
+                            }
+                        }).catch(function (err) {
+                            console.log('An error occurred while retrieving token. ', err);
+                            showToken('Error retrieving Instance ID token. ', err);
+                            setTokenSentToServer(false);
+                        });
+
+                    }).catch(function (err) {
+                        console.log('Unable to get permission to notify.', err);
+                    });
+                });
+
+            // Callback fired if Instance ID token is updated.
+            msg.onTokenRefresh(function () {
+                msg.getToken().then(function (refreshedToken) {
+                    console.log('Token refreshed.', refreshedToken);
+                    // Indicate that the new Instance ID token has not yet been sent to the
+                    // app server.
+                    setTokenSentToServer(false);
+                    window.localStorage.setItem('sentToServer', '0');
+                    // Send Instance ID token to app server.
+                    sendTokenToServer(refreshedToken);
+                    // ...
+                }).catch(function (err) {
+                    console.log('Unable to retrieve refreshed token ', err);
+                    showToken('Unable to retrieve refreshed token ', err);
+                });
+            });
+
+            msg.onMessage(function (payload) {
+                console.log('Message received. ', payload);
+                // [START_EXCLUDE]
+                // Update the UI to include the received message.
+                // appendMessage(payload);
+                // [END_EXCLUDE]
+            });
+
+            function showToken(currentToken) {
+                console.log('showToken:', currentToken);
+                // Show token in console and UI.
+                var tokenElement = document.querySelector('#token');
+                tokenElement.textContent = currentToken;
+            }
+            function setTokenSentToServer(sent) {
+                console.log('setTokenSentToServer:', sent);
+                window.localStorage.setItem('sentToServer', sent ? '1' : '0');
+            }
+
+            function sendTokenToServer(currentToken) {
+                console.log('sendTokenToServer:', currentToken);
+                if (!isTokenSentToServer()) {
+                    console.log('Sending token to server...');
+                    // TODO(developer): Send the current token to your server.
+                    setTokenSentToServer(true);
+                } else {
+                    console.log('Token already sent to server so won\'t send it again unless it changes');
+                }
+            }
+
+            function isTokenSentToServer() {
+                console.log('isTokenSentToServer');
+                return window.localStorage.getItem('sentToServer') === '1';
+            }
+
+            a2m.Helper.messaging = msg;
+
+        } catch (e) {
+            console.error('notificaciones:', e);
+            alert('notificaciones:' + e.getMessage());
         }
     },
 
