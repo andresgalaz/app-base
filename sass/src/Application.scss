@@ -160,19 +160,25 @@ body.x-ios.x-webview.x-portrait {
 // view DASHBOARD
 $dashboard-item-spacing: dynamic(20px);
 
-.dashboard > .x-body-el {
-    padding: $dashboard-item-spacing 0 0 $dashboard-item-spacing;
-}
+// .dashboard > .x-body-el {
+//     padding: $dashboard-item-spacing 0 0 $dashboard-item-spacing;
+// }
 
-.dashboard-item {
-    margin: 0 $dashboard-item-spacing $dashboard-item-spacing 0;
-    float: left;
-    width: calc(100% - #{$dashboard-item-spacing});
+// .dashboard-item {
+//     margin: 0 $dashboard-item-spacing $dashboard-item-spacing 0;
+//     float: left;
+//     width: calc(100% - #{$dashboard-item-spacing});
 
-    &.last-in-row {
-        margin-right: 0;
-    }
-}
+//     &.last-in-row {
+//         margin-right: 0;
+//     }
+// }
+
+@include panel-ui(
+  $ui: 'panel-dashboard-mensajes',
+  $header-background-color: $color-green-teal,
+  $header-line-height: 40px
+);
 
 .small-100 {
     width: calc(100% - #{$dashboard-item-spacing});
@@ -240,6 +246,7 @@ $dashboard-item-spacing: dynamic(20px);
 .status-tile-quantity {
   font-size: 250%;
   font-weight: 500;
+  line-height: 30px;
 }
 
 .status-tile-icon-wrap {
@@ -257,6 +264,13 @@ $dashboard-item-spacing: dynamic(20px);
   line-height: 2.4em;
   color: #fff;
   border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.mensajes-grid {
+  .x-big .x-titlebar-body-el {
+    min-height: 42px;
+  }
 }
 
 // view PACIENTE
@@ -269,9 +283,9 @@ $dashboard-item-spacing: dynamic(20px);
       background-size: 100%;
       background-position: 50%;
       float: left;
-      border-radius: 5;
+      border-radius: 5px;
   }
-    
+
   .listaMovil {
       overflow: hidden;
       padding: 20px;
@@ -280,11 +294,11 @@ $dashboard-item-spacing: dynamic(20px);
       // padding: 30px 0px 0px 20px;
       // box-shadow: 0 10px 10px -10px #8c8b8b inset;
   }
-  
+
   .margenImagen {
       margin-left: 110px;
   }
-  
+
   .listaMovil > .titulo {
       font-size: 18px;
       font-weight: bold;
@@ -292,6 +306,14 @@ $dashboard-item-spacing: dynamic(20px);
       text-overflow: ellipsis;
       white-space: nowrap;
   }
+
+  .listaMovil > .titulo1 {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .listaMovil > .normal {
       color: #adadad;
       font-size: 14px;
@@ -299,17 +321,44 @@ $dashboard-item-spacing: dynamic(20px);
       text-overflow: ellipsis;
       white-space: nowrap;
   }
+
   .listaMovil .mapa {
       color: red;
-  }       
+  }    
+
   .listaMovil .activo {
       color: #2196F3;
       font-size: 20px;
-  }       
+  }  
+
   .listaMovil .apagado {
       color: #8c8b8b;
       font-size: 20px;
   }     
+
+  .listaMensajes {
+    overflow: hidden;
+    padding: 20px;
+    border-bottom: 1px solid $border-color;
+    vertical-align: top;
+    // width: 100%;
+    width: -webkit-fill-available;
+  }
+
+  .listaMensajes tbody tr td > .titulo1 {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .listaMensajes tbody tr td > .normal {
+    color: #adadad;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .pacienteInfo-container {
@@ -332,15 +381,20 @@ $dashboard-item-spacing: dynamic(20px);
 
   .box {
     margin-left: 40px;
-    line-height: 14px;
+    line-height: 20px;
     font-size: 14px;
-    line-height: 18px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 
     &:before {
       margin-left: -20px;
-      color: $base-color;
+      color: $color-soft-red;
+      position: absolute;
     }
   }
 }
 
+.listaMail-dataview {
+
+}
 // ------------------------------------------------------------------------------------------------------------------------------------------------

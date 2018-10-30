@@ -7,6 +7,7 @@ Ext.application({
     requires: [
         'a2m.*', 
         'Ext.grid.Grid', 
+        'Ext.grid.plugin.RowExpander',
         'Ext.data.JsonStore', 
         'Ext.scroll.Scroller', 
         'Ext.field.*', 
