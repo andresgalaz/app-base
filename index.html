@@ -19,7 +19,11 @@
             storageBucket: "peha-d34fc.appspot.com",
             messagingSenderId: "332329094674"
         };
-        firebase.initializeApp(config);
+        try {
+            firebase.initializeApp(config);            
+        } catch (e) {
+            console.log("La inicializar firebase", e);
+        }
     </script>
 
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
