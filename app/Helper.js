@@ -276,7 +276,7 @@ Ext.define('a2m.Helper', {
                 setTimeout(function () {
                     // Si está todo OK carga items del menu principal
                     me.creaMenuArbol(obj.menu, oView);
-                }, 500);
+                }, 2000);
             },
             failure: function (response, opts) {
                 console.error(response);
