@@ -44,6 +44,7 @@ Ext.define('a2m.view.login.LoginController', {
                 // Si está todo OK carga items del menu principal
                 a2m.Helper.creaMenuArbol(obj.menu);
 
+                // TODO: Agregar pantalla cambio de contraseña
                 view.destroy();
             },
             failure: function (response, opts) {
@@ -63,11 +64,10 @@ Ext.define('a2m.view.login.LoginController', {
         }
     },
 
-    onRecuperarClave: function() {
+    onModificarClaveClick: function() {
 
     },
 
     onRecuperarClaveClick: function() {
-        console.log('[onRecuperarClick] click');
     }
 });

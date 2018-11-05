@@ -1,7 +1,7 @@
 Ext.define('a2m.view.login.PasswordReset', {
     extend: 'a2m.view.login.AuthBase',
     xtype: 'view.login.PasswordReset',
-    requires: ['Ext.field.Email'],
+    // requires: ['Ext.field.Email'],
 
     items: [
         {
@@ -17,18 +17,18 @@ Ext.define('a2m.view.login.PasswordReset', {
                     html: 'Recuperar Contraseña'
                 }, 
                 {
-                    xtype: 'emailfield',
+                    xtype: 'numberfield',
                     label: 'Email con el cual se registró',
                     minWidth: 300
                 }, 
                 {
                     xtype: 'button',
-                    text: 'Reset Password',
+                    text: 'Recuperar Contraseña',
                     iconAlign: 'right',
                     iconCls: 'x-fa fa-angle-right',
                     ui: 'action',
                     width: '100%',
-                    handler: 'onRecuperarClave'
+                    handler: 'onRecuperarClaveClick'
                 }, 
                 {
                     xtype: 'component',

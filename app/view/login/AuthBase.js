@@ -3,7 +3,8 @@ Ext.define('a2m.view.login.AuthBase', {
     
     requires: [
         'Ext.layout.VBox', 
-        'a2m.view.login.LoginController'
+        'a2m.view.login.LoginController',
+        'a2m.view.login.PasswordReset'
     ],
     
     controller: 'login',
