@@ -102,19 +102,11 @@ Ext.define('a2m.view.login.LoginController', {
         }
     },
 
-<<<<<<< HEAD
-    onModificarClaveClick: function() {
-
-    },
-
-    onRecuperarClaveClick: function() {
-=======
     onRecuperarClave: function () {
 
     },
 
     onRecuperarClaveClick: function () {
         if (DEBUG) console.log('[onRecuperarClick] click');
->>>>>>> 7771c1a42d026298dd7953ed2b7933e84f1e4854
     }
 });
