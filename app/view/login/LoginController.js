@@ -37,6 +37,8 @@ Ext.define('a2m.view.login.LoginController', {
                     cEmail: obj.cEmail,
                     perfiles: obj.perfiles
                 };
+                a2m.Helper.inicio();
+
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
@@ -53,11 +55,6 @@ Ext.define('a2m.view.login.LoginController', {
                     // primero verifica que no venga una redireccionameinto en la ruta de incio
                     if (! /.+a2m\/#.+/.test(window.location))
                         location.href = '#view.dashboard.Dashboard';
-                    else {
-                        // Si no hay redireccionamiento se inicia geolocalización y notificaciones,
-                        // porque si hay redirección , esto se va a hace al ingresar de nuevo
-                        me.inicio();
-                    }
 
                 }, 1000);
 

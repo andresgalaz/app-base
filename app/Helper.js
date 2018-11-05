@@ -40,11 +40,9 @@ Ext.define('a2m.Helper', {
             });
         } catch (e) {
             console.error('inicio:', e);
-            alert('inicio:' + e.message);
         }
 
         try {
-
             var msg = firebase.messaging();
             msg.usePublicVapidKey('BCuSqDX6UM5fTxVBaRIrCOJldhA0T4nBiq2Z4f4C0jDrcdbjUbK2q2N8IeRS9etRsOssHeYNfsL7o13JFfBvIIU');
 
@@ -140,7 +138,7 @@ Ext.define('a2m.Helper', {
 
         } catch (e) {
             console.error('notificaciones:', e);
-            alert('notificaciones:' + e.message);
+            Ext.Msg.alert('Error al registrar Notificaciones Firebase'+ e.message);
         }
     },
 
@@ -271,6 +269,7 @@ Ext.define('a2m.Helper', {
                     cEmail: obj.cEmail,
                     perfiles: obj.perfiles
                 };
+                me.inicio();
 
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
@@ -285,11 +284,6 @@ Ext.define('a2m.Helper', {
                     // primero verifica que no venga una redireccionameinto en la ruta de incio
                     if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location))
                         location.href = '#view.dashboard.Dashboard';
-                    else {
-                        // Si no hay redireccionamiento se inicia geolocalización y notificaciones,
-                        // porque si hay redirección , esto se va a hace al ingresar de nuevo
-                        me.inicio();
-                    }
                 }, 1000);
             },
             failure: function (response, opts) {

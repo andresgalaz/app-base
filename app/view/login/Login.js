@@ -3,10 +3,8 @@ Ext.define('a2m.view.login.Login', {
     xtype: 'view.login.Login',
 
     requires: [ 
-        'Ext.form.Panel', 
-        'Ext.field.Text', 
-        'Ext.field.Password', 
-        'Ext.layout.HBox', 
+        // 'a2m.view.login.PasswordReset',
+        // 'a2m.view.login.PasswordChange'
     ],
 
     fullscreen : true,
