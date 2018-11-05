@@ -6,6 +6,8 @@ Ext.define('a2m.Helper', {
     messaging: null,
 
     inicio: function () {
+        if (typeof (oGlobal) == 'undefined') return;
+
         try {
             // Va a refrescar la posición cada minuto
             Ext.create('Ext.util.Geolocation', {
@@ -19,7 +21,7 @@ Ext.define('a2m.Helper', {
                             latitud: geo.getLatitude(),
                             usuario_id: oGlobal.pUsuario
                         })
-                        console.log('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
+                        if (DEBUG) console.log('Refresh Geolocation', 'New latitude: ' + geo.getLatitude() + ' , Longitude: ' + geo.getLongitude());
                     },
                     locationerror: function (geo, bTimeout, bPermissionDenied, bLocationUnavailable, message) {
                         if (bTimeout) {
@@ -38,7 +40,7 @@ Ext.define('a2m.Helper', {
             });
         } catch (e) {
             console.error('inicio:', e);
-            alert('inicio:' + e.getMessage());
+            alert('inicio:' + e.message);
         }
 
         try {
@@ -49,43 +51,43 @@ Ext.define('a2m.Helper', {
             navigator.serviceWorker.register('./firebase-messaging-sw.js')
                 .then((registration) => {
                     msg.useServiceWorker(registration);
-                    console.log('registration:', registration);
+                    if (DEBUG) console.log('registration:', registration);
 
                     // Request permission and get token.....
                     msg.requestPermission().then(function () {
-                        console.log('Notification permission granted.');
+                        if (DEBUG) console.log('Notification permission granted.');
                         // TODO(developer): Retrieve an Instance ID token for use with FCM.
                         // ...
 
                         // Get Instance ID token. Initially this makes a network call, once retrieved
                         // subsequent calls to getToken will return from cache.
                         msg.getToken().then(function (currentToken) {
-                            console.log('currentToken:', currentToken);
+                            if (DEBUG) console.log('currentToken:', currentToken);
                             if (currentToken) {
                                 sendTokenToServer(currentToken);
                                 updateUIForPushEnabled(currentToken);
                             } else {
                                 // Show permission request.
-                                console.log('No Instance ID token available. Request permission to generate one.');
+                                if (DEBUG) console.log('No Instance ID token available. Request permission to generate one.');
                                 // Show permission UI.
                                 updateUIForPushPermissionRequired();
                                 setTokenSentToServer(false);
                             }
                         }).catch(function (err) {
-                            console.log('An error occurred while retrieving token. ', err);
+                            console.error('An error occurred while retrieving token. ', err);
                             showToken('Error retrieving Instance ID token. ', err);
                             setTokenSentToServer(false);
                         });
 
                     }).catch(function (err) {
-                        console.log('Unable to get permission to notify.', err);
+                        console.error('Unable to get permission to notify.', err);
                     });
                 });
 
             // Callback fired if Instance ID token is updated.
             msg.onTokenRefresh(function () {
                 msg.getToken().then(function (refreshedToken) {
-                    console.log('Token refreshed.', refreshedToken);
+                    if (DEBUG) console.log('Token refreshed.', refreshedToken);
                     // Indicate that the new Instance ID token has not yet been sent to the
                     // app server.
                     setTokenSentToServer(false);
@@ -94,13 +96,13 @@ Ext.define('a2m.Helper', {
                     sendTokenToServer(refreshedToken);
                     // ...
                 }).catch(function (err) {
-                    console.log('Unable to retrieve refreshed token ', err);
+                    console.error('Unable to retrieve refreshed token ', err);
                     showToken('Unable to retrieve refreshed token ', err);
                 });
             });
 
             msg.onMessage(function (payload) {
-                console.log('Message received. ', payload);
+                if (DEBUG) console.log('Message received. ', payload);
                 // [START_EXCLUDE]
                 // Update the UI to include the received message.
                 // appendMessage(payload);
@@ -108,29 +110,29 @@ Ext.define('a2m.Helper', {
             });
 
             function showToken(currentToken) {
-                console.log('showToken:', currentToken);
+                if (DEBUG) console.log('showToken:', currentToken);
                 // Show token in console and UI.
                 var tokenElement = document.querySelector('#token');
                 tokenElement.textContent = currentToken;
             }
             function setTokenSentToServer(sent) {
-                console.log('setTokenSentToServer:', sent);
+                if (DEBUG) console.log('setTokenSentToServer:', sent);
                 window.localStorage.setItem('sentToServer', sent ? '1' : '0');
             }
 
             function sendTokenToServer(currentToken) {
-                console.log('sendTokenToServer:', currentToken);
+                if (DEBUG) console.log('sendTokenToServer:', currentToken);
                 if (!isTokenSentToServer()) {
-                    console.log('Sending token to server...');
+                    if (DEBUG) console.log('Sending token to server...');
                     // TODO(developer): Send the current token to your server.
                     setTokenSentToServer(true);
                 } else {
-                    console.log('Token already sent to server so won\'t send it again unless it changes');
+                    if (DEBUG) console.log('Token already sent to server so won\'t send it again unless it changes');
                 }
             }
 
             function isTokenSentToServer() {
-                console.log('isTokenSentToServer');
+                if (DEBUG) console.log('isTokenSentToServer');
                 return window.localStorage.getItem('sentToServer') === '1';
             }
 
@@ -138,7 +140,7 @@ Ext.define('a2m.Helper', {
 
         } catch (e) {
             console.error('notificaciones:', e);
-            alert('notificaciones:' + e.getMessage());
+            alert('notificaciones:' + e.message);
         }
     },
 
@@ -187,7 +189,7 @@ Ext.define('a2m.Helper', {
                 prm_dataSource: 'xgenJNDI'
             },
             success: function (response, opts) {
-                console.log('GrabaLocal:', response);
+                if (DEBUG) console.log('GrabaLocal:', response);
                 var resp = Ext.decode(response.responseText);
                 if (resp.success) {
                     // Grabación exitosa, se elimina la información local
@@ -198,7 +200,7 @@ Ext.define('a2m.Helper', {
                 }
             },
             failure: function (response, opts) {
-                console.log('GrabaLocal(failure:', response);
+                console.error('GrabaLocal(failure:', response);
                 // Como no se pudo enviar la información, se mantiene localmente
                 localStorage.setItem("salida", Ext.encode(oSalida));
             }
@@ -228,7 +230,7 @@ Ext.define('a2m.Helper', {
             },
             failure: function (response, opts) {
                 console.error('server-side failure with status code ' + response.status);
-                alert('server-side failure with status code ' + response.status + e.getMessage());
+                alert('server-side failure with status code ' + response.status + " " + e.message);
             }
         })
     },
@@ -276,11 +278,19 @@ Ext.define('a2m.Helper', {
                 setTimeout(function () {
                     // Si está todo OK carga items del menu principal
                     me.creaMenuArbol(obj.menu, oView);
-                }, 2000);
+                    // Y apunta a la aplicación pro defecto.
+                    // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
+
+                    // primero verifica que no venga una redireccionameinto en la ruta de incio
+                    if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location) )
+                        location.href = '#view.dashboard.Dashboard';
+
+                }, 1000);
             },
             failure: function (response, opts) {
                 console.error(response);
             }
         });
-    }
+    },
+
 });

@@ -2,7 +2,7 @@ Ext.define('a2m.view.login.LoginController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.login',
 
-    init: function(){
+    init: function () {
     },
 
     login: function (cUsuario, cPassword, oView) {
@@ -40,9 +40,20 @@ Ext.define('a2m.view.login.LoginController', {
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
-                
-                // Si está todo OK carga items del menu principal
-                a2m.Helper.creaMenuArbol(obj.menu);
+
+                // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
+                setTimeout(function () {
+                    // Si está todo OK carga items del menu principal
+                    a2m.Helper.creaMenuArbol(obj.menu);
+
+                    // Y apunta a la aplicación pro defecto.
+                    // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
+
+                    // primero verifica que no venga una redireccionameinto en la ruta de incio
+                    if (! /.+a2m\/#.+/.test(window.location))
+                        location.href = '#view.dashboard.Dashboard';
+
+                }, 1000);
 
                 view.destroy();
             },
@@ -51,6 +62,33 @@ Ext.define('a2m.view.login.LoginController', {
             }
         });
     },
+    /*
+     * Elimina la sesión con el BSH y después elimina la localStorage, excpeto las posiciones GPS.
+     * Finalmente refresca la página
+     */
+    salir: function () {
+        var me = this;
+        if (DEBUG) console.log('Desconectando .... ');
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("menu");
+        localStorage.removeItem("token");
+        Ext.Ajax.request({
+            url: a2m.Helper.rutaServidor + 'menuMovilSalir.bsh',
+            method: 'post',
+            params: { prm_dataSource: 'xgenJNDI' },
+            success: function (response, opts) {
+                if (DEBUG) console.log(response);
+                setTimeout(() => {
+                    location.href = '#view.login.Login'; 
+                    // window.close();
+                }, 2000);
+            },
+            failure: function (response, opts) {
+                console.error(response);
+            }
+        });
+    },
+
 
     onLoginClick: function (sender) {
         var me = this,
@@ -63,11 +101,11 @@ Ext.define('a2m.view.login.LoginController', {
         }
     },
 
-    onRecuperarClave: function() {
+    onRecuperarClave: function () {
 
     },
 
-    onRecuperarClaveClick: function() {
-        console.log('[onRecuperarClick] click');
+    onRecuperarClaveClick: function () {
+        if (DEBUG) console.log('[onRecuperarClick] click');
     }
 });

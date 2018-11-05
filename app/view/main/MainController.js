@@ -54,7 +54,7 @@ Ext.define('a2m.view.main.MainController', {
             me.setCurrentView(info.node.data.viewType);
         });
 
-        console.log('onNavigationItemClick');
+        if( DEBUG ) console.log('onNavigationItemClick');
         
         if (info.select) {
             // If we click a selectable node, slide out the navigation tree. We cannot
