@@ -2,7 +2,7 @@ Ext.define('a2m.view.login.LoginController', {
     extend: 'Ext.app.ViewController',
     alias: 'controller.login',
 
-    init: function(){
+    init: function () {
     },
 
     login: function (cUsuario, cPassword, oView) {
@@ -43,7 +43,8 @@ Ext.define('a2m.view.login.LoginController', {
 
                 // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
                 setTimeout(function () {
-                    // Si está todo OK carga items del menu principal
+                    // Si está todo OK
+                    // Carga items del menu principal
                     a2m.Helper.creaMenuArbol(obj.menu);
 
                     // Y apunta a la aplicación pro defecto.
@@ -52,6 +53,11 @@ Ext.define('a2m.view.login.LoginController', {
                     // primero verifica que no venga una redireccionameinto en la ruta de incio
                     if (! /.+a2m\/#.+/.test(window.location))
                         location.href = '#view.dashboard.Dashboard';
+                    else {
+                        // Si no hay redireccionamiento se inicia geolocalización y notificaciones,
+                        // porque si hay redirección , esto se va a hace al ingresar de nuevo
+                        me.inicio();
+                    }
 
                 }, 1000);
 
@@ -80,8 +86,7 @@ Ext.define('a2m.view.login.LoginController', {
             success: function (response, opts) {
                 if (DEBUG) console.log(response);
                 setTimeout(() => {
-                    location.href = '#view.login.Login'; 
-                    // window.close();
+                    location.href = '#view.login.Login';
                 }, 2000);
             },
             failure: function (response, opts) {

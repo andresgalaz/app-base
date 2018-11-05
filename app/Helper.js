@@ -272,8 +272,6 @@ Ext.define('a2m.Helper', {
                     perfiles: obj.perfiles
                 };
 
-                me.inicio();
-
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
@@ -285,9 +283,13 @@ Ext.define('a2m.Helper', {
                     // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
 
                     // primero verifica que no venga una redireccionameinto en la ruta de incio
-                    if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location) )
+                    if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location))
                         location.href = '#view.dashboard.Dashboard';
-
+                    else {
+                        // Si no hay redireccionamiento se inicia geolocalización y notificaciones,
+                        // porque si hay redirección , esto se va a hace al ingresar de nuevo
+                        me.inicio();
+                    }
                 }, 1000);
             },
             failure: function (response, opts) {
