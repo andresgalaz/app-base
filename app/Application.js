@@ -23,7 +23,7 @@ Ext.define('a2m.Application', {
 
     launch: function () {
 
-        a2m.Helper.inicio();
+        // a2m.Helper.inicio();
 
         // Recupera la información de conexión de la información local
         var cUsuario = null;
