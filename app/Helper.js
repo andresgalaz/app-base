@@ -271,6 +271,9 @@ Ext.define('a2m.Helper', {
                     cEmail: obj.cEmail,
                     perfiles: obj.perfiles
                 };
+
+                me.inicio();
+
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);

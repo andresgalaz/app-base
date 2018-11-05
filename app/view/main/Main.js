@@ -2,8 +2,9 @@ Ext.define('a2m.view.main.Main', {
     extend: 'Ext.navigation.View',
 
     requires: [
-        'Ext.Button', 'Ext.list.Tree', 'Ext.navigation.View',
-        'a2m.view.main.MainViewModel', 'a2m.view.main.MainController'
+        // 'Ext.Button', 'Ext.list.Tree', 'Ext.navigation.View',
+        'a2m.view.main.MainViewModel', 
+        'a2m.view.main.MainController'
     ],
 
     controller: 'main',
