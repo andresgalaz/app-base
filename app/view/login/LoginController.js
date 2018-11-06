@@ -27,6 +27,7 @@ Ext.define('a2m.view.login.LoginController', {
                     Ext.Msg.alert('Conexión', obj.message);
                     return;
                 }
+                // TODO Walas: Agregar parametro bPasswordCaducada
                 oGlobal = {
                     depura: obj.depura,
                     ambiente: obj.ambiente,
@@ -43,6 +44,8 @@ Ext.define('a2m.view.login.LoginController', {
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
 
+                // TODO Maxi: Si modifica password redirigir a view.login.PasswordChange
+
                 // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
                 setTimeout(function () {
                     // Si está todo OK
@@ -58,7 +61,6 @@ Ext.define('a2m.view.login.LoginController', {
 
                 }, 1000);
 
-                // TODO: Agregar pantalla cambio de contraseña
                 view.destroy();
             },
             failure: function (response, opts) {
@@ -104,11 +106,37 @@ Ext.define('a2m.view.login.LoginController', {
         }
     },
 
-    onRecuperarClave: function () {
+    onModificarClaveClick: function () {
+        var me = this,
+            view = me.getView(),
+            jsonData = {};
 
+        if (view.isValid()) {
+            jsonData['DATOS'] = view.getValues();
+            a2m.Helper.grabaLocal('modificarClave', jsonData);
+
+            Ext.Msg.alert('Login', 'Clave modificada con éxito');
+
+            me.redirectTo('view.dashboard.Dashboard');
+        }
     },
 
     onRecuperarClaveClick: function () {
-        if (DEBUG) console.log('[onRecuperarClick] click');
+        // if (DEBUG) console.log('[onRecuperarClick] click');
+        var me = this,
+            view = me.getView(),
+            jsonData = {};
+        
+        if (view.isValid()) {
+            jsonData['DATOS'] = view.getValues();
+            a2m.Helper.grabaLocal('recuperarClave', jsonData);
+
+            Ext.Msg.alert('Login', 'Se ha enviado un email a su casilla con una nueva contraseña.<br>Verifique e ingrésela en el sistema');
+
+            me.redirectTo('view.login.Login');
+
+        } else {
+            Ext.Msg.alert('Login', 'Ingrese usuario');
+        }
     }
 });
