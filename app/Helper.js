@@ -267,6 +267,7 @@ Ext.define('a2m.Helper', {
                     cNombre: obj.cNombre,
                     tpUsuario: obj.tpUsuario,
                     cEmail: obj.cEmail,
+                    bPasswordCaducada: obj.caducaPassword,
                     perfiles: obj.perfiles
                 };
                 me.inicio();

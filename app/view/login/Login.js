@@ -3,8 +3,8 @@ Ext.define('a2m.view.login.Login', {
     xtype: 'view.login.Login',
 
     requires: [ 
-        // 'a2m.view.login.PasswordReset',
-        // 'a2m.view.login.PasswordChange'
+        'a2m.view.login.PasswordReset',
+        'a2m.view.login.PasswordChange'
     ],
 
     fullscreen : true,

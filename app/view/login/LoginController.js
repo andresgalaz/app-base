@@ -27,7 +27,6 @@ Ext.define('a2m.view.login.LoginController', {
                     Ext.Msg.alert('Conexión', obj.message);
                     return;
                 }
-                // TODO Walas: Agregar parametro bPasswordCaducada
                 oGlobal = {
                     depura: obj.depura,
                     ambiente: obj.ambiente,
@@ -36,6 +35,7 @@ Ext.define('a2m.view.login.LoginController', {
                     cNombre: obj.cNombre,
                     tpUsuario: obj.tpUsuario,
                     cEmail: obj.cEmail,
+                    bPasswordCaducada: obj.caducaPassword,
                     perfiles: obj.perfiles
                 };
                 a2m.Helper.inicio();
@@ -43,8 +43,6 @@ Ext.define('a2m.view.login.LoginController', {
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
-
-                // TODO Maxi: Si modifica password redirigir a view.login.PasswordChange
 
                 // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
                 setTimeout(function () {
@@ -56,12 +54,18 @@ Ext.define('a2m.view.login.LoginController', {
                     // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
 
                     // primero verifica que no venga una redireccionameinto en la ruta de incio
-                    if (! /.+a2m\/#.+/.test(window.location))
-                        location.href = '#view.dashboard.Dashboard';
+                    // if (! /.+a2m\/#.+/.test(window.location))
+                    //     location.href = '#view.dashboard.Dashboard';
 
+                    if (obj.caducaPassword) {
+                        me.redirectTo('view.login.PasswordChange');
+                    } else {
+                        me.redirectTo('view.dashboard.Dashboard');
+                    }
                 }, 1000);
 
                 view.destroy();
+
             },
             failure: function (response, opts) {
                 console.error(response);
@@ -94,7 +98,6 @@ Ext.define('a2m.view.login.LoginController', {
         });
     },
 
-
     onLoginClick: function (sender) {
         var me = this,
             // refs = me.getReferences(),
@@ -109,26 +112,32 @@ Ext.define('a2m.view.login.LoginController', {
     onModificarClaveClick: function () {
         var me = this,
             view = me.getView(),
+            refs = me.getReferences(),
+            pass1 = refs.password_nueva.getValue(),
+            pass2 = refs.password_confirma.getValue(),
             jsonData = {};
 
-        if (view.isValid()) {
-            jsonData['DATOS'] = view.getValues();
+        if (pass1 == pass2) {
+            jsonData['DATOS'] = refs.frmPasswordChange.getValues();
             a2m.Helper.grabaLocal('modificarClave', jsonData);
 
-            Ext.Msg.alert('Login', 'Clave modificada con éxito');
-
+            // Ext.Msg.alert('Login', 'Clave modificada con éxito');
             me.redirectTo('view.dashboard.Dashboard');
+            view.destroy();
+            
+        } else {
+            Ext.Msg.alert('Login', 'No coinciden las contraseñas');
         }
     },
 
     onRecuperarClaveClick: function () {
         // if (DEBUG) console.log('[onRecuperarClick] click');
         var me = this,
-            view = me.getView(),
+            refs = me.getReferences(),
             jsonData = {};
         
-        if (view.isValid()) {
-            jsonData['DATOS'] = view.getValues();
+        if (refs.frmRecupera.isValid()) {
+            jsonData['DATOS'] = refs.frmRecupera.getValues();
             a2m.Helper.grabaLocal('recuperarClave', jsonData);
 
             Ext.Msg.alert('Login', 'Se ha enviado un email a su casilla con una nueva contraseña.<br>Verifique e ingrésela en el sistema');
