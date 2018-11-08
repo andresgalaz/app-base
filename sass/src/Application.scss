@@ -277,13 +277,16 @@ $dashboard-item-spacing: dynamic(20px);
 .listaPacientes-dataview {
   .imgPaciente {
       display: inline-block;
-      width: 100px;
-      height: 100px;
+      width: 70px;
+      height: 70px;
       background-repeat: no-repeat;
-      background-size: 100%;
-      background-position: 50%;
+      background-size: 136%;
+      background-position: 93%;
       float: left;
-      border-radius: 5px;
+      border-radius: 40px;
+      border-color: $base-border-color;
+      margin-top: 7%;
+      margin-left: 2%;
   }
 
   .listaMovil {

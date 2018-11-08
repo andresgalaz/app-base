@@ -113,18 +113,26 @@ Ext.define('a2m.view.login.LoginController', {
         var me = this,
             view = me.getView(),
             refs = me.getReferences(),
+            datosUsuario = {},
             pass1 = refs.password_nueva.getValue(),
             pass2 = refs.password_confirma.getValue(),
             jsonData = {};
 
+        jsonData['DATOS'] = {};
+        
         if (pass1 == pass2) {
-            jsonData['DATOS'] = refs.frmPasswordChange.getValues();
+            jsonData.DATOS['formModificaClave'] = refs.frmPasswordChange.getValues();
+            
+            datosUsuario['id'] = oGlobal.pUsuario;
+            datosUsuario['nombre'] = oGlobal.cUsuario;
+            jsonData.DATOS.formModificaClave['cusuario'] = datosUsuario;
+
             a2m.Helper.grabaLocal('modificarClave', jsonData);
 
             // Ext.Msg.alert('Login', 'Clave modificada con éxito');
             me.redirectTo('view.dashboard.Dashboard');
             view.destroy();
-            
+
         } else {
             Ext.Msg.alert('Login', 'No coinciden las contraseñas');
         }
@@ -140,7 +148,7 @@ Ext.define('a2m.view.login.LoginController', {
             jsonData['DATOS'] = refs.frmRecupera.getValues();
             a2m.Helper.grabaLocal('recuperarClave', jsonData);
 
-            Ext.Msg.alert('Login', 'Se ha enviado un email a su casilla con una nueva contraseña.<br>Verifique e ingrésela en el sistema');
+            Ext.Msg.alert('Login', 'Se ha enviado un email a su casilla con una nueva contraseña.<br>Por favor verifique e ingrésela en el sistema');
 
             me.redirectTo('view.login.Login');
 
