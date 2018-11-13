@@ -8,8 +8,8 @@ Ext.define('a2m.Helper', {
     inicio: function () {
         if (typeof (oGlobal) == 'undefined') return;
 
+        // Va a refrescar la posición cada 5 minutos
         try {
-            // Va a refrescar la posición cada minuto
             Ext.create('Ext.util.Geolocation', {
                 autoUpdate: true,
                 frequency: 600000, // 5 minutos
@@ -42,6 +42,7 @@ Ext.define('a2m.Helper', {
             console.error('inicio:', e);
         }
 
+        // Inicia firebase
         try {
             var msg = firebase.messaging();
             msg.usePublicVapidKey('BCuSqDX6UM5fTxVBaRIrCOJldhA0T4nBiq2Z4f4C0jDrcdbjUbK2q2N8IeRS9etRsOssHeYNfsL7o13JFfBvIIU');
@@ -63,12 +64,13 @@ Ext.define('a2m.Helper', {
                             if (DEBUG) console.log('currentToken:', currentToken);
                             if (currentToken) {
                                 sendTokenToServer(currentToken);
-                                updateUIForPushEnabled(currentToken);
+                                // updateUIForPushEnabled(currentToken);
+                                registraToken(currentToken);
                             } else {
                                 // Show permission request.
                                 if (DEBUG) console.log('No Instance ID token available. Request permission to generate one.');
                                 // Show permission UI.
-                                updateUIForPushPermissionRequired();
+                                // updateUIForPushPermissionRequired();
                                 setTokenSentToServer(false);
                             }
                         }).catch(function (err) {
@@ -92,6 +94,7 @@ Ext.define('a2m.Helper', {
                     window.localStorage.setItem('sentToServer', '0');
                     // Send Instance ID token to app server.
                     sendTokenToServer(refreshedToken);
+                    registraToken(refreshedToken);
                     // ...
                 }).catch(function (err) {
                     console.error('Unable to retrieve refreshed token ', err);
@@ -135,6 +138,13 @@ Ext.define('a2m.Helper', {
             }
 
             a2m.Helper.messaging = msg;
+
+            function registraToken(currentToken) {
+                a2m.Helper.grabaLocal('token', {
+                    usuario_id: oGlobal.pUsuario,
+                    token: currentToken
+                });
+            }
 
         } catch (e) {
             console.error('notificaciones:', e);
@@ -292,5 +302,4 @@ Ext.define('a2m.Helper', {
             }
         });
     },
-
 });
