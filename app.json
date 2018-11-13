@@ -43,7 +43,7 @@
                 
     "name": "a2m",
     "namespace": "a2m",
-    "version": "1.0.0.7",
+    "version": "1.0.0.8",
     "framework": "ext",
     "toolkit": "modern",
     "theme": "theme-material",
