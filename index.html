@@ -6,15 +6,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, user-scalable=yes">
 
-    <title>a2m v0.8</title>
+    <title>a2m v0.10</title>
     <link rel="shortcut icon" href="favicon.ico" />
 
     <script>
         // Indica si activa o no console.log
         var DEBUG = true;
     </script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
-    <script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-messaging.js"></script>
+    <!-- <script>
         // Initialize Firebase
         var config = {
             apiKey: "AIzaSyBRQpzafvP0lj_8sZYdVoPAjqU2enT-ULw",
@@ -29,7 +31,7 @@
         } catch (e) {
             console.log("La inicializar firebase", e);
         }
-    </script>
+    </script> -->
 
     <!-- The line below must be kept intact for Sencha Cmd to build your application -->
     <script id="microloader" data-app="230a8e94-09e0-4027-8570-77bd08d0ae4c" type="text/javascript" src="bootstrap.js"></script>

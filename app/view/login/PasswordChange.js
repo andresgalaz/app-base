@@ -14,6 +14,7 @@ Ext.define('a2m.view.login.PasswordChange', {
             reference: 'frmPasswordChange',
             padding: 10,
             width: 300,
+            title: 'Contraseña Caducada',
             defaults: { 
                 margin: '0 0 20 0',
                 xtype: 'passwordfield',

@@ -15,7 +15,10 @@ Ext.define('a2m.view.main.MainController', {
     },
 
     routes: {
-        ':node': 'setCurrentView'
+        ':node': {
+            action: 'setCurrentView',
+            before: 'beforeRoute'
+        },
     },
 
     config: {
@@ -26,6 +29,8 @@ Ext.define('a2m.view.main.MainController', {
     collapsedCls: 'main-nav-collapsed',
 
     init: function (view) {
+        if (DEBUG) console.log('SEQ INICIO [MainController]');
+
         var logo = view.lookup('logo'),
             nav = view.lookup('navigation');
 
@@ -46,11 +51,21 @@ Ext.define('a2m.view.main.MainController', {
         Ext.getBody().appendChild(nav.element);
     },
 
+    beforeRoute: function (node, action) {
+        var me = this,
+            oUsr = Ext.decode(localStorage.getItem("usuario"));
+        
+        if (typeof oUsr === "undefined") {
+            me.setCurrentView('view.login.Login');
+        } else {
+            action.resume();
+        }
+    },
 
     onNavigationItemClick: function (tree, info) {
         var me = this;
 
-	    a2m.Helper.cargaFormulario( info.node.data.viewType, function(){
+	    me.cargaFormulario( info.node.data.viewType, function(){
             me.setCurrentView(info.node.data.viewType);
         });
 
@@ -77,32 +92,55 @@ Ext.define('a2m.view.main.MainController', {
         this.setShowNavigation(!this.getShowNavigation());
     },
 
+    cargaFormulario: function (cAccion, fnCallback) {
+        var cAppName = Ext.getApplication().getName();
+        var cUrl = cAppName + "/app/" + cAccion.replace(/\./g, '/') + '.js';
+        var cNombreClase = cAppName + '.' + cAccion;
+
+        Ext.require(cNombreClase, function () {
+            var objCreado = Ext.create(cNombreClase);
+            if (typeof (fnCallback) == 'function')
+                fnCallback(objCreado);
+        });
+    },
+
     setCurrentView: function (hashTag) {
         // Se utiliza notación Camel, luego pasar a minusculas rompe el esquema
         // hashTag = (hashTag || '').toLowerCase();
 
-        var view = this.getView(),
+        var me = this,
+            pos =  hashTag.indexOf("/"),
+            viewHash = pos > 0 ? hashTag.substring(0, pos) : hashTag,
+            evento_id = pos > 0 ? hashTag.substring(pos + 1, hashTag.length) : 0,
+            view = this.getView(),
             navigationTree = this.lookup('navigationTree'),
             store = navigationTree.getStore(),
-            node = store.findNode('routeId', hashTag) ||
-                   store.findNode('viewType', hashTag),
-            item = view.child('component[routeId=' + hashTag + ']');
+            node = store.findNode('routeId', viewHash) ||
+                   store.findNode('viewType', viewHash),
+            item = view.child('component[routeId=' + viewHash + ']');
 
         if (!item) {
-            a2m.Helper.cargaFormulario(hashTag, function(){
+            me.cargaFormulario(viewHash, function(obj) {
                 item = {
-                    xtype: hashTag,
-                    routeId: hashTag
-                };
+                    xtype: viewHash,
+                    routeId: viewHash
+                },
                 setTimeout(function(){
                     view.setActiveItem(item);
                     navigationTree.setSelection(node);
                 }, 500 );
+                
+                if (evento_id > 0 && obj) {
+                    obj.fireEvent('cargadatos', evento_id);
+                }
             });
             return;
         } 
         view.setActiveItem(item);
         navigationTree.setSelection(node);
+        if (evento_id > 0) {
+            item.fireEvent('cargadatos', evento_id);
+        }
     },
 
     updateShowNavigation: function (showNavigation, oldValue) {
@@ -142,7 +180,7 @@ Ext.define('a2m.view.main.MainController', {
         var me = this,
             href = btn.config.href;
 
-        a2m.Helper.cargaFormulario(href, function(){
+        me.cargaFormulario(href, function(){
             me.setCurrentView(href);
         });
     }

@@ -38,17 +38,19 @@ Ext.define('a2m.view.login.LoginController', {
                     bPasswordCaducada: obj.caducaPassword,
                     perfiles: obj.perfiles
                 };
-                a2m.Helper.inicio();
 
                 localStorage.setItem("usuario", Ext.encode(oGlobal));
                 localStorage.setItem("menu", Ext.encode(obj.menu));
                 localStorage.setItem("token", obj.token);
 
+                Ext.getApplication().inicioGeolocalizacion();
+                Ext.getApplication().registraToken();
+
                 // Hace la carga en forma diferida, para que la sesión tenga tiempo, sino aparece como deslogeado
                 setTimeout(function () {
                     // Si está todo OK
                     // Carga items del menu principal
-                    a2m.Helper.creaMenuArbol(obj.menu);
+                    Ext.getApplication().creaMenuArbol(obj.menu);
 
                     // Y apunta a la aplicación pro defecto.
                     // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
@@ -129,9 +131,8 @@ Ext.define('a2m.view.login.LoginController', {
 
             a2m.Helper.grabaLocal('modificarClave', jsonData);
 
-            // Ext.Msg.alert('Login', 'Clave modificada con éxito');
-            me.redirectTo('view.dashboard.Dashboard');
-            view.destroy();
+            Ext.Msg.alert('Login', 'Contraseña modificada con éxito');
+            me.redirectTo('view.login.Login'); 
 
         } else {
             Ext.Msg.alert('Login', 'No coinciden las contraseñas');
