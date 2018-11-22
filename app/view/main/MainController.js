@@ -113,6 +113,7 @@ Ext.define('a2m.view.main.MainController', {
             viewHash = pos > 0 ? hashTag.substring(0, pos) : hashTag,
             evento_id = pos > 0 ? hashTag.substring(pos + 1, hashTag.length) : 0,
             view = this.getView(),
+            refs = view.getReferences(),
             navigationTree = this.lookup('navigationTree'),
             store = navigationTree.getStore(),
             node = store.findNode('routeId', viewHash) ||
@@ -124,7 +125,20 @@ Ext.define('a2m.view.main.MainController', {
                 item = {
                     xtype: viewHash,
                     routeId: viewHash
-                },
+                }
+
+                switch (viewHash) {
+                    case 'view.paciente.ListaPacientes':
+                    case 'view.solicitud.ListaDerivados':
+                    case 'view.dashboard.Dashboard':
+                        refs.tlbMain.setHidden(false);
+                        break;
+                    
+                    default:
+                        refs.tlbMain.setHidden(true);
+                        break;
+                }
+
                 setTimeout(function(){
                     view.setActiveItem(item);
                     navigationTree.setSelection(node);
@@ -138,6 +152,19 @@ Ext.define('a2m.view.main.MainController', {
         } 
         view.setActiveItem(item);
         navigationTree.setSelection(node);
+
+        switch (item.xtype) {
+            case 'view.paciente.ListaPacientes':
+            case 'view.solicitud.ListaDerivados':
+            case 'view.dashboard.Dashboard':
+                refs.tlbMain.setHidden(false);
+                break;
+            
+            default:
+                refs.tlbMain.setHidden(true);
+                break;
+        }
+
         if (evento_id > 0) {
             item.fireEvent('cargadatos', evento_id);
         }

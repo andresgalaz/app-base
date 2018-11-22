@@ -2,7 +2,6 @@ Ext.define('a2m.view.main.Main', {
     extend: 'Ext.navigation.View',
 
     requires: [
-        // 'Ext.Button', 'Ext.list.Tree', 'Ext.navigation.View',
         'a2m.view.main.MainViewModel', 
         'a2m.view.main.MainController'
     ],
@@ -15,6 +14,7 @@ Ext.define('a2m.view.main.Main', {
 
     items: [{
         xtype: 'maintoolbar',
+        reference: 'tlbMain',
         docked: 'top',
         // userCls: 'main-toolbar',
         ui: 'toolbar-principal',

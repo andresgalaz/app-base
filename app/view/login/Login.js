@@ -7,7 +7,7 @@ Ext.define('a2m.view.login.Login', {
         'a2m.view.login.PasswordChange'
     ],
 
-    fullscreen : true,
+    // fullscreen : true,
 
     layout: {
         pack: 'bottom'

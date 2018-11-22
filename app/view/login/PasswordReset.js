@@ -3,7 +3,7 @@ Ext.define('a2m.view.login.PasswordReset', {
     xtype: 'view.login.PasswordReset',
     // requires: ['Ext.field.Email'],
 
-    fullscreen : true,
+    // fullscreen : true,
     scrollable: 'y',
 
     layout: {
