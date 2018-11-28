@@ -12,19 +12,21 @@ firebase.initializeApp({
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
-const msg = firebase.messaging();
+var msg = firebase.messaging();
 
-// msg.setBackgroundMessageHandler(function(payload) {
-//     if (DEBUG) console.log('[firebase-messaging-sw.js] Received background message ', payload);
-//     // Customize notification here
-//     var notificationTitle = 'Background Message Title';
-//     var notificationOptions = {
-//       body: 'Background Message body.',
-//       icon: '/resources/pwa96.png'
-//     };
+msg.setBackgroundMessageHandler(function(payload) {
+    if (DEBUG) console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    // Customize notification here
+    var servidor = window.location.origin + window.location.pathname,
+        notificationTitle = 'HA - App Programas Especiales',
+        notificationOptions = {
+        body: payload.notification.body,
+        icon: '/resources/pwa96.png',
+        click_action : payload.data.url ? servidor + '#' + payload.data.url : null
+      };
   
-//     return self.registration.showNotification(notificationTitle, notificationOptions);
-// });
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+});
 
 self.addEventListener('notificationclick', function(event) {
     if (DEBUG) console.log('[notificationclick] event', event);
@@ -32,7 +34,7 @@ self.addEventListener('notificationclick', function(event) {
     clickedNotification.close();
   
     // Do something as the result of the notification click
-    const promiseChain = doSomething();
-    event.waitUntil(promiseChain);
+    // const promiseChain = doSomething();
+    // event.waitUntil(promiseChain);
 });
 // console.log('firebase-messaging-sw');

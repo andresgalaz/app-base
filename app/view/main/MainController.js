@@ -207,8 +207,9 @@ Ext.define('a2m.view.main.MainController', {
         var me = this,
             href = btn.config.href;
 
-        me.cargaFormulario(href, function(){
-            me.setCurrentView(href);
-        });
+        me.redirectTo(href);
+        // me.cargaFormulario(href, function(){
+        //     me.setCurrentView(href);
+        // });
     }
 });

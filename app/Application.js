@@ -24,9 +24,6 @@ Ext.define('a2m.Application', {
     // },
 
     launch: function () {
-
-        // a2m.Helper.inicio();
-
         // Inicializa Firebase
         var me = this,
             cUsuario = localStorage.getItem("usuario") ? Ext.decode(localStorage.getItem("usuario")).cUsuario : null,
@@ -105,15 +102,15 @@ Ext.define('a2m.Application', {
                 });
     
                 msg.onMessage(function (payload) {
+                    var servidor = window.location.origin + window.location.pathname;
+
                     if (DEBUG) console.log('Message received. ', payload);
                     // [START_EXCLUDE]
                     // Update the UI to include the received message.
+                    payload.notification.icon = '/resources/pwa96.png';
+                    payload.notification.click_action = payload.data.url ? servidor + '#/' + payload.data.url : null;
                     // appendMessage(payload);
                     // [END_EXCLUDE]
-
-                    var data = payload.data;
-
-                    
                 });
     
                 function showToken(currentToken) {
@@ -284,14 +281,13 @@ Ext.define('a2m.Application', {
                     // Y apunta a la aplicación pro defecto.
                     // Maxito: desde aquí no hay otro modo porque no tenemos siempre el objeto VIEW en oView
 
-                    // primero verifica que no venga una redireccionameinto en la ruta de incio
-                    // if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location))
-                    //     location.href = '#view.dashboard.Dashboard';
-
                     if (obj.caducaPassword) {
                         me.redirectTo('view.login.PasswordChange');
                     } else {
-                        me.redirectTo('view.dashboard.Dashboard');
+                        // primero verifica que no venga una redireccionameinto en la ruta de incio
+                        if (! /.+a2m\/#.+/.test(window.location) || /.+a2m\/#view.login.Login/.test(window.location))
+                            // location.href = '#view.dashboard.Dashboard';
+                            me.redirectTo('view.dashboard.Dashboard');
                     }
                 }, 1000);
             },
@@ -302,10 +298,10 @@ Ext.define('a2m.Application', {
     },
 
     onAppUpdate: function () {
-        Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
+        Ext.Msg.confirm('Actualización', 'Existe una nueva versión de la app PE Profesionales.<br><b>¿Desea recargar?</b>',
             function (choice) {
                 if (choice === 'yes') {
-                    window.location.reload();
+                    window.location.reload(true);
                 }
             }
         );
