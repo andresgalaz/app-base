@@ -4,24 +4,54 @@
             "name": "Programas Especiales APP Móvil",
             "short_name": "PE Móvil",
             "icons": [{
-                    "src": "resources/pwa96.png",
+                    "src": "resources/images/pwa48.png",
+                    "sizes": "48x48"
+                },{
+                    "src": "resources/images/pwa72.png",
+                    "sizes": "72x72"
+                },{
+                    "src": "resources/images/pwa96.png",
                     "sizes": "96x96"
                 },
                 {
-                    "src": "resources/pwa192.png",
+                    "src": "resources/images/pwa192.png",
                     "sizes": "192x192"
                 },
                 {
-                    "src": "resources/pwa256.png",
+                    "src": "resources/images/pwa256.png",
                     "sizes": "256x256"
                 }
             ],
+            "lang": "es",
             "theme_color": "#054059",
             "background_color": "#054059",
             "display": "standalone",
             "orientation": "portrait",
             "start_url": "index.html",
             "gcm_sender_id":"103953800507"
+        },
+
+        "serviceWorker": {
+            "runtimeCaching": [
+                {
+                    "urlPattern": "\\/prm_funcion=pe.js_pe_movil.operConsultaListadoSolicitudes",
+                    "options": {
+                        "cache": {
+                            "name": "listaSolicitudes",
+                            "maxEntries": 10
+                        }
+                    }
+                },
+                {
+                    "urlPattern": "\\/prm_funcion=pe.js_pe_movil.operConsultaListadoPacientes",
+                    "options": {
+                        "cache": {
+                            "name": "listaPacientes",
+                            "maxEntries": 10
+                        }
+                    }
+                }
+            ]
         }
     },
 
@@ -44,7 +74,7 @@
                 
     "name": "a2m",
     "namespace": "a2m",
-    "version": "1.0.0.12",
+    "version": "1.0.0.17",
     "framework": "ext",
     "toolkit": "modern",
     "theme": "theme-material",
@@ -251,7 +281,8 @@
         },
         {
             "path": "app.js",
-            "bundle": true
+            "bundle": true,
+            "update": "full"
         }
     ],
 
@@ -304,12 +335,12 @@
          //   - other: a string (such as the build.timestamp shown here) to allow
          //     requests to be cached for this build.
          //
-         "cache": true,
+         "cache": false,
 
          // When "cache" is not true, this value is the request parameter used
          // to control caching.
          //
-         "cacheParam": "_agv"
+         "cacheParam": "_dc"
      },
 
     /**
@@ -337,6 +368,21 @@
      * Settings specific to testing builds.
      */
     "testing": {
+        "output": {
+            "appCache": {
+                "enable": false
+                // "path": "cache.appcache"
+            }
+        },
+        "cache": {
+            "enable": false,
+            "deltas": true
+        },
+        "loader": {
+            // "cache": "${build.timestamp}",
+            "cache": false,
+            "cacheParam": "_dc"
+        }
     },
 
     /**
@@ -459,19 +505,22 @@
     /**
      * Used to automatically generate cache.manifest (HTML 5 application cache manifest)
      * file when you build.
+     
+     This class describes the configs used to produce the HTML5 application cache manifest.
+     Important: This technology has been deprecated in favor of Service Workers and, in some browsers, Progressive Web Apps (PWA's). 
      */
     "appCache": {
         /**
          * List of items in the CACHE MANIFEST section
          */
         "cache": [
-            "index.html"
         ],
         /**
          * List of items in the NETWORK section
          */
         "network": [
-            "*"
+            "*",
+            "/app/view/*"
         ],
         /**
          * List of items in the FALLBACK section
@@ -508,6 +557,10 @@
      * names.
      *
      */
+
+     "locales": [
+        "es"
+    ],
 
     /**
      * File / directory name patttern to ignore when copying to the builds. Must be a
