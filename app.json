@@ -74,7 +74,7 @@
                 
     "name": "a2m",
     "namespace": "a2m",
-    "version": "1.0.0.17",
+    "version": "1.0.0.18",
     "framework": "ext",
     "toolkit": "modern",
     "theme": "theme-material",
@@ -340,7 +340,7 @@
          // When "cache" is not true, this value is the request parameter used
          // to control caching.
          //
-         "cacheParam": "_dc"
+         "cacheParam": "_agv"
      },
 
     /**
@@ -381,7 +381,7 @@
         "loader": {
             // "cache": "${build.timestamp}",
             "cache": false,
-            "cacheParam": "_dc"
+            "cacheParam": "_dcTest"
         }
     },
 
