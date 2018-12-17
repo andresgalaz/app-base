@@ -14,7 +14,7 @@ Ext.application({
         'Ext.util.Base64',
         'Ext.Img', 
         'Ext.dataview.*',
-        'Ext.Version',
+        'Ext.os'
     ],
     mainView: 'a2m.view.main.Main'
 

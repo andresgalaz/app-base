@@ -155,11 +155,16 @@ Ext.define('a2m.Application', {
         }
 
         // Verifica que los datos existan y que este conectado
-        var token = localStorage.getItem('token');
+        var token = localStorage.getItem('token'),
+            hash = window.location.hash;
+        
         if (cUsuario != null && token != null) {
             me.validaToken(cUsuario, token, null);
+        
         } else {
-            me.redirectTo('view.login.Login');
+            // Si es un redireccionamiento del mail no hace login
+            if (hash.indexOf('view.page') == -1)  
+                me.redirectTo('view.login.Login');
         }
     },
 

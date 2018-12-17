@@ -54,9 +54,16 @@ Ext.define('a2m.view.main.MainController', {
     beforeRoute: function (node, action) {
         var me = this,
             oUsr = Ext.decode(localStorage.getItem("usuario"));
-        
+
         if (typeof oUsr === "undefined") {
-            me.setCurrentView('view.login.Login');
+            var pos = node.indexOf("view.pages");
+
+            if (pos == -1) {
+                me.setCurrentView('view.login.Login');
+            } else {
+                if ( DEBUG ) console.log('[beforeRoute] node', node);
+                action.resume();
+            }
         } else {
             action.resume();
         }
